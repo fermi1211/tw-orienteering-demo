@@ -23,6 +23,8 @@ export const initialRoles = [
   {id:'ADMIN',name:'系統 admin',active:true,system:true,screens:screenCatalog.map(page=>page.id)},
 ];
 export const initialOptionSets = {
+  registrationModes:[{id:'SINGLE',name:'單人報名',active:true},{id:'MULTI',name:'多人報名',active:true}],
+  registrationFees:[{id:'SINGLE',name:'單次報名',active:true},{id:'MEMBER',name:'會員',active:true},{id:'LEGACY_PREPAID',name:'舊制已預繳',active:true}],
   articleCategories:['定向入門','讀圖技巧','參賽準備'].map(name=>({id:name,name,active:true})),
   memberLabels:[{id:'member',name:'會員',active:true},{id:'legacy-prepaid',name:'舊制已預繳',active:true}],
 };
