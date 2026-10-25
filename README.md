@@ -1,1 +1,36 @@
-# tw-orienteering-demo
+# 台灣定向越野報名網站 Demo
+
+繁體中文 React＋Vite 互動原型，採森林留白設計，可在桌面、平板與手機預覽。
+
+## 示範內容
+
+賽事列表與活動資訊、示範登入與註冊、報名、我的報名、會員資料，以及管理後台的賽事、會員、名單與出發序管理。
+
+資料均為示範內容，只保留於本次分頁記憶體，重新整理即重設。請使用虛構資料；沒有正式登入、資料庫、收款或寄信。
+
+## 本機預覽
+
+使用 Node.js 22 或以上版本：
+
+```sh
+npm ci
+npm run dev
+```
+
+## 建置與檢查
+
+```sh
+npm run build
+node --test tests/*.test.mjs
+npm run preview
+```
+
+靜態網站輸出位於 `dist/client`。其他輸出供既有 Sites 包裝使用，GitHub Pages 只發布 `dist/client`。
+
+## GitHub Pages
+
+在儲存庫的 Settings → Pages 將 Source 設為 GitHub Actions。推送到 `main` 後會自動建置、測試並發布。
+
+使用相對資源路徑，支援 `https://帳號.github.io/儲存庫名稱/`。首頁頁尾的「畫面預覽」可切換各種示範頁面。
+
+地圖使用 OpenStreetMap；字型與圖示來自 Noto、Phosphor，套件授權依各套件規定。

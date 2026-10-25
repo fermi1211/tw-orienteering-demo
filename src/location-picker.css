@@ -1,0 +1,18 @@
+.location-picker { min-width: 0; }
+.location-picker-map { width: 100%; height: 320px; border: 1px solid #b6c4b7; border-radius: 8px; background: #e9eee6; isolation: isolate; z-index: 0; font-family: 'Noto Sans TC', sans-serif; }
+.location-picker-map:focus-visible { outline: 3px solid #72976d; outline-offset: 3px; }
+.location-picker-map .leaflet-control-zoom a { width: 44px; height: 44px; line-height: 44px; color: #194f3c; }
+.location-picker-map .leaflet-control-attribution { font-size: 10px; max-width: 100%; }
+.location-pin { background: transparent; border: 0; }
+.location-pin > span { display: block; width: 30px; height: 30px; transform: rotate(-45deg); background: #194f3c; border: 3px solid #fff; border-radius: 50% 50% 50% 0; box-shadow: 0 2px 5px #10272266; }
+.location-pin > span::after { content: ''; position: absolute; width: 8px; height: 8px; background: #fff; border-radius: 50%; top: 8px; left: 8px; }
+.location-pin:focus-visible { outline: 3px solid #c06c36; outline-offset: 5px; }
+.location-selection { font-size: 13px; line-height: 1.8; color: #194f3c; margin: 12px 0; overflow-wrap: anywhere; }
+.location-picker-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.location-map-button { min-height: 44px; padding: 9px 13px; border: 1px solid #b6c4b7; border-radius: 5px; background: #fffefa; color: #194f3c; font: inherit; font-size: 12px; cursor: pointer; }
+.location-map-button:hover { background: #e9eee0; }
+.location-picker-actions .text-button { min-height: 44px; }
+.location-picker-actions button:disabled { opacity: .45; cursor: default; }
+.location-map-error { font-size: 12px; line-height: 1.8; color: #87461e; background: #fff1df; padding: 10px; border-radius: 4px; }
+.location-map-error button { min-height: 44px; margin-left: 8px; }
+@media(max-width: 600px) { .location-picker-map { height: 270px; } .location-picker-actions { gap: 6px; } .location-map-button { flex: 1 1 120px; } }
