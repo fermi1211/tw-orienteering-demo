@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {activeEventRows,registrationClosed,createStartOrder,syncStartOrder,entryName,moveStartEntry,generateSectionTimes,validateStartOrder,entryColumns} from '../src/event-export-model.js';
+import {activeEventRows,registrationClosed,createStartOrder,assignStartDivision,syncStartOrder,entryName,moveStartEntry,generateSectionTimes,validateStartOrder,entryColumns} from '../src/event-export-model.js';
 import {reportTables} from '../src/roster-image.js';
 
 const event={id:'race',status:'PUBLISHED',closes:'2026-10-24T12:00',divisions:['ME','WE','MA','OPEN']};
@@ -65,4 +65,40 @@ test('column wrapping and simultaneous waves never drop or duplicate names',()=>
   assert.equal(entryColumns(event,many,13).flatMap(column=>column.cells).length,31);
   const tables=reportTables('start',event,[],{sections:[{title:'自訂標頭',theme:'orange',parallel:2,entries:[{name:'甲',time:'09:30'},{name:'乙',time:'09:30'},{name:'丙',time:'09:31'}]}]});
   assert.deepEqual(tables[0].rows,[['09:30','甲','乙'],['09:31','丙','']]);
+});
+test('selecting a division transfers it to the chosen section without losing edits or duplicating entries',()=>{
+  let original=syncStartOrder(createStartOrder(event),rows);
+  original={...original,sections:original.sections.map(generateSectionTimes)};
+  original.sections[0].entries[0]={recordId:'a',nameOverride:'保留編輯名稱',time:'09:17'};
+  const before=JSON.stringify(original);
+  const moved=syncStartOrder(assignStartDivision(original,'other','ME',true),rows);
+  assert.equal(JSON.stringify(original),before);
+  assert.equal(moved.sections[0].divisions.includes('ME'),false);
+  assert.equal(moved.sections[1].divisions.includes('ME'),true);
+  assert.equal(moved.sections[0].entries.length,0);
+  assert.deepEqual(moved.sections[1].entries.find(entry=>entry.recordId==='a'),{recordId:'a',nameOverride:'保留編輯名稱',time:'09:17'});
+  assert.deepEqual(validateStartOrder(moved,rows),[]);
+  const ids=moved.sections.flatMap(section=>section.entries.map(entry=>entry.recordId));
+  assert.equal(ids.length,rows.length);
+  assert.equal(new Set(ids).size,rows.length);
+  const restored=syncStartOrder(assignStartDivision(moved,'elite','ME',true),rows);
+  assert.equal(restored.sections[1].divisions.includes('ME'),false);
+  assert.equal(restored.sections[0].entries.find(entry=>entry.recordId==='a').time,'09:17');
+  assert.equal(restored.sections[0].entries.find(entry=>entry.recordId==='a').nameOverride,'保留編輯名稱');
+});
+test('unchecking only removes the selected assignment; rechecking restores detached data and accepts empty divisions',()=>{
+  let order=syncStartOrder(createStartOrder(event),rows);
+  order.sections[0].entries[0]={recordId:'a',time:'09:18',nameOverride:'暫存名稱'};
+  order=syncStartOrder(assignStartDivision(order,'elite','ME',false),rows);
+  assert.equal(order.detachedEntries.find(entry=>entry.recordId==='a').time,'09:18');
+  assert.equal(assignStartDivision(order,'missing','ME',true),order);
+  order=syncStartOrder(assignStartDivision(order,'other','ME',true),rows);
+  assert.equal(order.sections[1].entries.find(entry=>entry.recordId==='a').nameOverride,'暫存名稱');
+  const unselected=assignStartDivision(order,'elite','ME',false);
+  assert.equal(unselected.sections[1].divisions.includes('ME'),true);
+  order=syncStartOrder(assignStartDivision(order,'other','WE',true),rows);
+  assert.equal(order.sections[0].divisions.includes('WE'),false);
+  assert.equal(order.sections[1].divisions.includes('WE'),true);
+  assert.equal(order.sections[1].entries.length,rows.length);
+  assert.equal(order.detachedEntries.length,0);
 });

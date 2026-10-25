@@ -17,6 +17,15 @@ export function createStartOrder(event) {
     {id:'other',title:'進階／公開組',theme:'orange',divisions:other,start:'09:30',interval:1,parallel:2,rowsPerColumn:13,entries:[]},
   ].filter(section => section.divisions.length) };
 }
+export function assignStartDivision(order, sectionId, code, checked) {
+  if (!order.sections.some(section => section.id === sectionId)) return order;
+  return {...order, sections: order.sections.map(section => ({
+    ...section,
+    divisions: section.id === sectionId
+      ? checked ? [...new Set([...section.divisions, code])] : section.divisions.filter(value => value !== code)
+      : checked ? section.divisions.filter(value => value !== code) : [...section.divisions],
+  }))};
+}
 export function syncStartOrder(order, rows) {
   const previous = new Map([...(order.detachedEntries||[]),...order.sections.flatMap(section => section.entries)].map(entry => [entry.recordId,entry]));
   const assigned = new Set();
