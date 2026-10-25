@@ -8,7 +8,7 @@ const feeNames = { MEMBER: '會員', LEGACY_PREPAID: '舊制已預繳', SINGLE: 
 const groupNames = { ME:'男子菁英組', WE:'女子菁英組', MA:'男子進階組', WA:'女子進階組', OPEN:'公開組' };
 const dateTime = value => value ? new Intl.DateTimeFormat('zh-TW', {timeZone:'Asia/Taipei', year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:false}).format(new Date(`${value}:00+08:00`)) : '待主辦單位公告';
 
-function LocationMap({ event }) {
+export function LocationMap({ event }) {
   const point = event.mapLocation;
   const valid = point && Number.isFinite(point.lat) && Number.isFinite(point.lng) && Math.abs(point.lat) <= 85 && Math.abs(point.lng) <= 180;
   const delta = point?.approximate ? 0.045 : 0.006;
@@ -31,7 +31,7 @@ export function EventDetail({ event, state, participation, user, fromRegistratio
         <section className="activity-section"><h2>報名與繳款</h2><p>登入後選擇參賽組別及費用類別。單次報名採銀行轉帳，填寫帳號後五碼與繳款日期，由主辦單位人工對帳；外國人另可選擇現場繳費。</p><p>報名期間內可修改組別及尚未完成對帳的繳款資料；不提供取消或退費。</p></section>
         <section className="activity-section"><h2>活動告知</h2>{event.terms?.length ? event.terms.map(term => <div key={term.id} className="activity-term"><h3>{term.title}</h3><p>{term.content}</p><span>{term.required ? '報名時必須同意' : '閱讀告知'}</span></div>) : <p>本場尚未提供活動條款，正式內容待主辦單位公告。</p>}</section>
         <EventDocuments documents={attachments?.documents}/>
-      </div><aside className="activity-aside"><LocationMap event={event}/><div className="activity-registration">{state === 'open' ? <><p>準備好，找到自己的方向。</p><button className="primary activity-register-button" onClick={onRegister}>{user ? '立即報名' : '登入後報名'}<ArrowRight size={21}/></button></> : <p className="notice">{state==='past'?'本場為過去賽事，已結束報名。':state==='closed'?'本場報名已截止。':'本場賽事尚未開放報名。'}</p>}<p className="hint">示範頁面，未建立正式報名或收款。</p></div></aside></div>
+      </div><aside className="activity-aside"><LocationMap event={event}/><div className="activity-registration">{state === 'open' && onRegister ? <><p>準備好，找到自己的方向。</p><button className="primary activity-register-button" onClick={onRegister}>{user ? '立即報名' : '登入後報名'}<ArrowRight size={21}/></button></> : <p className="notice">{state==='open'?'目前身分未開放報名畫面。':state==='past'?'本場為過去賽事，已結束報名。':state==='closed'?'本場報名已截止。':'本場賽事尚未開放報名。'}</p>}<p className="hint">示範頁面，未建立正式報名或收款。</p></div></aside></div>
       <PublicEventParticipation data={participation} mode="lists"/>
     </section>
   </main>;

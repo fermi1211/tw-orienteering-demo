@@ -40,7 +40,12 @@ export function EventDocuments({ documents = [] }) {
   return <section className="activity-section event-downloads" aria-label="簡章下載"><h2>簡章下載</h2><p>下載主辦單位提供的活動文件。</p>{documents.length ? <div className="attachment-documents">{documents.map(item => <DocumentTile key={item.id} item={item}/>)}</div> : <p className="attachment-empty">主辦單位尚未提供可下載的簡章。</p>}</section>;
 }
 
-export function EventAttachments({ value = empty, Dialog, editor = false, onChange }) {
+export function EventImageGallery({images=[],Dialog}) {
+  const [viewing,setViewing]=useState(null);
+  return <><div className="attachment-gallery">{images.map(item=><ImageTile key={item.id} item={item} onView={setViewing}/>)}</div>{viewing&&<Dialog title="檢視公告圖片" onClose={()=>setViewing(null)} wide><FullImage item={viewing}/></Dialog>}</>;
+}
+
+export function EventAttachments({ value = empty, Dialog, editor = false, onChange, imagesOnly=false, imageLabel='賽事圖片' }) {
   const id = useId(), [viewing, setViewing] = useState(null), [error, setError] = useState('');
   const images = value.images || [], documents = value.documents || [];
   function addFiles(event, kind) {
@@ -55,13 +60,13 @@ export function EventAttachments({ value = empty, Dialog, editor = false, onChan
   }
   function remove(kind, id) { setError(''); onChange({ ...value, [kind]: value[kind].filter(item => item.id !== id) }); }
   return <section className={editor ? 'event-attachments attachment-editor' : 'event-attachments'} aria-label={editor ? '上傳賽事附件' : '賽事圖片與簡章下載'}>
-    <header><p className="eyebrow">{editor ? '賽事附件' : '活動資料'}</p><h3>{editor ? '讓參賽資訊更完整' : '圖片與簡章'}</h3><p>{editor ? '加入活動照片、路線圖及簡章，儲存後提供參賽者查看。' : '查看主辦單位提供的圖片，下載簡章掌握活動資訊。'}</p></header>
-    <div className="attachment-section-heading"><h4><Images size={21}/>賽事圖片 <span>{images.length ? `· ${images.length} 張` : ''}</span></h4>{editor && <label className="attachment-upload" htmlFor={`${id}-images`}><UploadSimple size={19}/>選擇圖片<input id={`${id}-images`} aria-label="上傳賽事圖片" type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={event => addFiles(event, 'images')}/></label>}</div>
+    {!imagesOnly&&<header><p className="eyebrow">{editor ? '賽事附件' : '活動資料'}</p><h3>{editor ? '讓參賽資訊更完整' : '圖片與簡章'}</h3><p>{editor ? '加入活動照片、路線圖及簡章，儲存後提供參賽者查看。' : '查看主辦單位提供的圖片，下載簡章掌握活動資訊。'}</p></header>}
+    <div className="attachment-section-heading"><h4><Images size={21}/>{imageLabel} <span>{images.length ? `· ${images.length} 張` : ''}</span></h4>{editor && <label className="attachment-upload" htmlFor={`${id}-images`}><UploadSimple size={19}/>選擇圖片<input id={`${id}-images`} aria-label={`上傳${imageLabel}`} type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={event => addFiles(event, 'images')}/></label>}</div>
     {editor && <p className="hint">JPG、PNG、WebP；每張上限 10 MB，最多 8 張。第一張會先顯示。</p>}
     {images.length ? <div className="attachment-gallery">{images.map(item => <ImageTile key={item.id} item={item} onView={setViewing} onRemove={editor ? () => remove('images', item.id) : undefined} onLabel={editor ? label => onChange({ ...value, images: images.map(image => image.id === item.id ? { ...image, label } : image) }) : undefined}/>)}</div> : <p className="attachment-empty">{editor ? '尚未加入圖片，可上傳活動照片或路線圖。' : '主辦單位尚未提供圖片。'}</p>}
-    <div className="attachment-section-heading"><h4><FileText size={21}/>簡章檔案 <span>{documents.length ? `· ${documents.length} 份` : ''}</span></h4>{editor && <label className="attachment-upload" htmlFor={`${id}-documents`}><UploadSimple size={19}/>選擇檔案<input id={`${id}-documents`} aria-label="上傳簡章檔案" type="file" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple onChange={event => addFiles(event, 'documents')}/></label>}</div>
+    {!imagesOnly&&<><div className="attachment-section-heading"><h4><FileText size={21}/>簡章檔案 <span>{documents.length ? `· ${documents.length} 份` : ''}</span></h4>{editor && <label className="attachment-upload" htmlFor={`${id}-documents`}><UploadSimple size={19}/>選擇檔案<input id={`${id}-documents`} aria-label="上傳簡章檔案" type="file" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple onChange={event => addFiles(event, 'documents')}/></label>}</div>
     {editor && <p className="hint">PDF、DOCX；每份上限 20 MB，最多 5 份。參賽者將以原檔名下載。</p>}
-    {documents.length ? <div className="attachment-documents">{documents.map(item => <DocumentTile key={item.id} item={item} onRemove={editor ? () => remove('documents', item.id) : undefined}/>)}</div> : <p className="attachment-empty">{editor ? '尚未加入簡章檔案。' : '主辦單位尚未提供可下載的簡章。'}</p>}
+    {documents.length ? <div className="attachment-documents">{documents.map(item => <DocumentTile key={item.id} item={item} onRemove={editor ? () => remove('documents', item.id) : undefined}/>)}</div> : <p className="attachment-empty">{editor ? '尚未加入簡章檔案。' : '主辦單位尚未提供可下載的簡章。'}</p>}</>}
     {error && <p className="form-error" role="alert">{error}</p>}
     {editor && <p className="attachment-save-note">附件會在儲存賽事後套用；草稿附件僅供後台查看。本次原型僅於瀏覽器暫存，重新整理即清除。</p>}
     {viewing && <Dialog title="檢視賽事圖片" onClose={() => setViewing(null)} wide><FullImage item={viewing}/></Dialog>}

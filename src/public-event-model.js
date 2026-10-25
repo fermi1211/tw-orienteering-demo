@@ -6,6 +6,7 @@ const taipeiDay = now => new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Taip
 const timestamp = value => Date.parse(value ? `${value.length === 16 ? value + ':00' : value}+08:00` : '');
 
 export function eventState(event, now = Date.now()) {
+  if (event.kind === 'HISTORICAL') return 'past';
   if (event.starts?.slice(0, 10) < taipeiDay(now)) return 'past';
   if (registrationClosed(event, now)) return 'closed';
   return event.status === 'PUBLISHED' && timestamp(event.opens) <= now && now < timestamp(event.closes) ? 'open' : 'upcoming';
@@ -13,7 +14,7 @@ export function eventState(event, now = Date.now()) {
 export const stateLabels = { open: '報名中', upcoming: '尚未開放', closed: '報名已截止', past: '過去賽事' };
 export function eventForList(event, now = Date.now()) {
   const date = event.starts?.slice(0, 10) || '';
-  return { ...event, date, displayDate: date.slice(5).replace('-', '.'), deadline: event.closes?.slice(5, 10).replace('-', '.') || '待公告', state: eventState(event, now), singleFee: event.fees.SINGLE };
+  return { ...event, date, displayDate: date.slice(5).replace('-', '.'), deadline: event.closes?.slice(5, 10).replace('-', '.') || (event.kind==='HISTORICAL'?'':'待公告'), state: eventState(event, now), singleFee: event.fees?.SINGLE };
 }
 export function groupedEvents(catalog, now = Date.now()) {
   const published = catalog.filter(event => event.status === 'PUBLISHED').map(event => eventForList(event, now));

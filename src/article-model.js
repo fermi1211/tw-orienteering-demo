@@ -1,4 +1,3 @@
-export const articleCategories = ['定向入門', '讀圖技巧', '參賽準備'];
 export const articleFonts = ['Noto Sans TC', 'Noto Serif TC', 'Arial', 'Georgia'];
 export const articleFontSizes = [12, 14, 16, 18, 20, 24, 28, 32, 40, 48];
 export const emptyArticleDocument = () => ({ type: 'doc', content: [{ type: 'paragraph' }] });
@@ -66,7 +65,7 @@ export function articleText(document) {
 export function articleImageCount(document) { return (document?.type === 'image' ? 1 : 0) + (document?.content || []).reduce((sum, node) => sum + articleImageCount(node), 0); }
 export function normalizeArticle(input = {}) {
   const content = sanitizeArticleDocument(input.content);
-  return { title: text(input.title, 100).trim(), excerpt: text(input.excerpt, 220).trim(), category: articleCategories.includes(input.category) ? input.category : articleCategories[0], author: text(input.author, 60).trim() || '台灣定向編輯部', cover: safeArticleImage(input.cover) || '', coverAlt: text(input.coverAlt, 250), content };
+  return { title: text(input.title, 100).trim(), excerpt: text(input.excerpt, 220).trim(), category: text(input.category, 80).trim(), author: text(input.author, 60).trim() || '台灣定向編輯部', cover: safeArticleImage(input.cover) || '', coverAlt: text(input.coverAlt, 250), content };
 }
 export function articlePublishErrors(input) {
   const article = normalizeArticle(input), errors = [];
