@@ -1,6 +1,6 @@
 import { MemberCredit, WalletPaymentChoice } from './MemberCredit.jsx';
 import { CancellationDialog } from './CancellationDialog.jsx';
-import { cancelParticipants, cancellationQuote, commitRegistration, creditBalance, memberCanCancel } from './member-credit-model.js';
+import { cancelParticipants, cancellationQuote, commitRegistration, creditBalance, memberCanCancel, cancellationAllowed, reconcileRegistration } from './member-credit-model.js';
 import { FeedbackForm } from './Feedback.jsx';
 import { createFeedback } from './feedback-model.js';
 import { GroupRegistration } from './GroupRegistration.jsx';
@@ -77,6 +77,7 @@ export function App(){
  const [registrationState,setRegistrationState]=useState(()=>({rows:initialRegistrationRows.map(row=>({...row,ownerId:row.ownerId||row.memberId||initialDemoMembers.find(member=>member.email===row.email)?.id})),ledger:[]})),[savedOrders,setSavedOrders]=useState({}),[now,setNow]=useState(Date.now);
  const rows=registrationState.rows,ledger=registrationState.ledger;
  const setRows=update=>setRegistrationState(previous=>({...previous,rows:typeof update==='function'?update(previous.rows):update}));
+ const [cancelSource,setCancelSource]=useState('MEMBER_SELF');
  const [cancelTarget,setCancelTarget]=useState(null),[financeNotice,setFinanceNotice]=useState('');
  const actor={id:sessionMemberId,role:memberRole,manageRegistrations:can('admin.registrations')};
  const balance=creditBalance(ledger,sessionMemberId);
@@ -108,19 +109,28 @@ export function App(){
   setRegistrationState(next);setRecords(prev=>prev.some(record=>record.id===saved.id)?prev.map(r=>r.id===saved.id?saved:r):[...prev,saved]);setCurrent(saved);
   if(edit){setRecordsNotice(`${saved.event.name}（${saved.id}）已儲存修改。`);open('records');}else setModal('success');
  }
- function requestCancellation(ids){
+ function requestCancellation(ids,source='MEMBER_SELF'){
   if(!currentMember)return;
-  const selected=rows.filter(row=>ids.includes(row.id)&&!row.cancelledAt);
+  const selected=rows.filter(row=>ids.includes(row.id)&&!row.cancelledAt&&!row.deletedAt);
   if(!selected.length){setRecordsNotice('沒有可取消的參賽者。');return;}
-  if(!actor.manageRegistrations){const event=catalog.find(item=>item.id===selected[0].eventId);if(!memberCanCancel(event)){setRecordsNotice('已超過報名截止時間，請聯絡管理員取消。');return;}}
-  setCancelTarget(ids);setFinanceNotice('');
+  if(selected.some(row=>!cancellationAllowed(actor,source,catalog.find(event=>event.id===row.eventId)))){
+   const message=source==='ADMIN_BACKOFFICE'?'後台僅於報名截止後開放取消報名。':'已超過報名截止時間，請聯絡管理員取消。';
+   setRecordsNotice(message);setFinanceNotice(message);return;
+  }
+  setCancelSource(source);setCancelTarget(ids);setFinanceNotice('');
  }
  function confirmCancellation(options){
-  if(!actor.manageRegistrations&&cancelTarget.some(id=>{const row=rows.find(item=>item.id===id);return !memberCanCancel(catalog.find(event=>event.id===row?.eventId));}))throw new Error('已超過報名截止時間，請聯絡管理員取消。');
+  if(cancelTarget.some(id=>{const row=rows.find(item=>item.id===id);return !cancellationAllowed(actor,cancelSource,catalog.find(event=>event.id===row?.eventId));}))throw new Error(cancelSource==='ADMIN_BACKOFFICE'?'後台僅於報名截止後開放取消報名。':'已超過報名截止時間，請聯絡管理員取消。');
   const quote=cancellationQuote(registrationState,cancelTarget,actor,options.creditMemberId);
-  const next=cancelParticipants(registrationState,cancelTarget,actor,{...options,members});
-  setRegistrationState(next);setCancelTarget(null);const message=`已取消 ${quote.rows.length} 位參賽者，退回儲值金 NT$${quote.amount}。`;
+  const next=cancelParticipants(registrationState,cancelTarget,actor,{...options,members,source:cancelSource});
+  setRegistrationState(next);setCancelTarget(null);const pending=quote.rows.filter(row=>row.payment==='BANK_TRANSFER'&&row.status==='PENDING').reduce((sum,row)=>sum+row.amount,0);
+  const message=`已取消 ${quote.rows.length} 位參賽者，退回儲值金 NT$${quote.amount}。${pending>0?`尚有 NT$${pending} 待核款，確認後自動回存付款會員。`:''}`;
   setFinanceNotice(message);setRecordsNotice(message);
+ }
+ function reconcileAndCredit(id,reconciled,creditMemberId){
+  const next=reconcileRegistration(registrationState,id,reconciled,actor,{members,creditMemberId});
+  const returned=next.ledger.reduce((sum,entry)=>sum+entry.amount,0)-ledger.reduce((sum,entry)=>sum+entry.amount,0);
+  setRegistrationState(next);setFinanceNotice(reconciled?`${id} 已完成整筆對帳${returned>0?`，取消項目已回存付款會員儲值金 NT$${returned}`:''}。`:`${id} 已取消對帳，回到待確認帳款。`);
  }
  const cancellationDialog=cancelTarget&&currentMember?<CancellationDialog state={registrationState} rowIds={cancelTarget} actor={actor} members={members} Dialog={Modal} onClose={()=>setCancelTarget(null)} onConfirm={confirmCancellation}/>:null;
  const inferredRecords=[...new Set(rows.filter(row=>row.ownerId===sessionMemberId).map(orderIdOf))].filter(id=>!records.some(record=>record.id===id)).map(id=>{const row=rows.find(row=>orderIdOf(row)===id),event=catalog.find(item=>item.id===row.eventId);return {id,ownerId:sessionMemberId,eventId:row.eventId,event:eventForList(event||catalog[0],now),mode:row.orderMode||'SINGLE',profile:{...profile,name:row.name||profile.name,nickname:row.nickname||profile.nickname},group:row.division,fee:row.fee,payment:row.payment,amount:row.amount,status:'報名完成'};});
@@ -136,11 +146,11 @@ export function App(){
  }
  const pageAllowed=view==='admin'?adminAllowed:can(view==='detail'?'events':view);
  const loginButton=()=>{setLoginNext(view==='signup'?'events':view==='admin'?'admin':null);setModal('login');};
- if(view==='admin'&&pageAllowed)return <><AdminWorkspace onCancelRegistration={row=>requestCancellation([row.id])} financeNotice={financeNotice} feedbackRecords={feedbackRecords} setFeedbackRecords={setFeedbackRecords} key={sessionMemberId} roles={roles} setRoles={setRoles} optionSets={optionSets} setOptionSets={setOptionSets} members={members} setMembers={setMembers} defaults={defaults} setDefaults={setDefaults} currentMemberId={sessionMemberId} onSwitchMember={id=>{const role=members.find(member=>member.id===id)?.role;loginAsMember(id,canEnterAdmin(roles,role)?'admin':'landing');}} historicalEvents={historicalEvents} setHistoricalEvents={setHistoricalEvents} onOpenHistorical={can('events')?selectEvent:undefined} catalog={catalog} setCatalog={setCatalog} rows={rows} setRows={setRows} savedOrders={savedOrders} setSavedOrders={setSavedOrders} articleRecords={articleRecords} setArticleRecords={setArticleRecords} onOpenArticle={can('journal')?readArticle:undefined} initialRole={memberRole} onExit={()=>open(landing())} onMemberMode={()=>open('profile')} Dialog={Modal}/>{cancellationDialog}</>;
+ if(view==='admin'&&pageAllowed)return <><AdminWorkspace onReconcileRegistration={reconcileAndCredit} onCancelRegistration={row=>requestCancellation([row.id],'ADMIN_BACKOFFICE')} financeNotice={financeNotice} feedbackRecords={feedbackRecords} setFeedbackRecords={setFeedbackRecords} key={sessionMemberId} roles={roles} setRoles={setRoles} optionSets={optionSets} setOptionSets={setOptionSets} members={members} setMembers={setMembers} defaults={defaults} setDefaults={setDefaults} currentMemberId={sessionMemberId} onSwitchMember={id=>{const role=members.find(member=>member.id===id)?.role;loginAsMember(id,canEnterAdmin(roles,role)?'admin':'landing');}} historicalEvents={historicalEvents} setHistoricalEvents={setHistoricalEvents} onOpenHistorical={can('events')?selectEvent:undefined} catalog={catalog} setCatalog={setCatalog} rows={rows} setRows={setRows} savedOrders={savedOrders} setSavedOrders={setSavedOrders} articleRecords={articleRecords} setArticleRecords={setArticleRecords} onOpenArticle={can('journal')?readArticle:undefined} initialRole={memberRole} onExit={()=>open(landing())} onMemberMode={()=>open('profile')} Dialog={Modal}/>{cancellationDialog}</>;
  let content;
  if(!pageAllowed)content=<AccessDenied user={user} roleLabel={roleName(roles,memberRole)} onLogin={loginButton} onLogout={logout} links={navLinks} onOpen={open}/>;
  else if(view==='journal')content=<JournalPage categories={optionSets.articleCategories} articles={publishedArticles} articleId={selectedArticleId} onRead={readArticle} onBack={()=>open('journal')}/>;
- else if(view==='registrations')content=<MyRegistrations canCancel={record=>actor.manageRegistrations||memberCanCancel(catalog.find(event=>event.id===record.eventId))} creditPanel={creditPanel} onCancel={(record,personId)=>requestCancellation(rows.filter(row=>orderIdOf(row)===record.id&&isActiveParticipant(row)&&(!personId||row.id===personId)).map(row=>row.id))} feeOptions={optionSets.registrationFees} records={ownRecords} defaultEvent={events[0]} onEdit={can('register')?editRecord:undefined} onBrief={can('events')?event=>selectEvent(event,true):undefined} onExplore={can('events')?()=>open('events'):undefined} onDemo={()=>showRecordsDemo()} notice={recordsNotice}/>;
+ else if(view==='registrations')content=<MyRegistrations canCancel={record=>memberCanCancel(catalog.find(event=>event.id===record.eventId))} creditPanel={creditPanel} onCancel={(record,personId)=>requestCancellation(rows.filter(row=>orderIdOf(row)===record.id&&isActiveParticipant(row)&&(!personId||row.id===personId)).map(row=>row.id))} feeOptions={optionSets.registrationFees} records={ownRecords} defaultEvent={events[0]} onEdit={can('register')?editRecord:undefined} onBrief={can('events')?event=>selectEvent(event,true):undefined} onExplore={can('events')?()=>open('events'):undefined} onDemo={()=>showRecordsDemo()} notice={recordsNotice}/>;
  else if(view==='profile')content=<MemberProfile creditPanel={creditPanel} key={sessionMemberId} profile={profile} role={memberRole} roleLabel={roleName(roles,memberRole)} groups={profileGroups} onSave={saveProfile} onBack={can('events')?()=>open('events'):undefined} onRecords={can('registrations')?()=>open('records'):undefined} onAdmin={adminAllowed?()=>open('admin'):undefined}/>;
  else if(view==='signup')content=<SignupPage groups={activeGroups} onBack={()=>open(landing())} onLogin={()=>{setLoginNext('events');setModal('login');}}/>;
  else if(view==='events')content=<EventList onSelect={selectEvent} catalog={publicCatalog} now={now} mode={eventListMode} onModeChange={setEventListMode} month={calendarMonth} onMonthChange={setCalendarMonth} Dialog={Modal}/>;

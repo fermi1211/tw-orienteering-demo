@@ -1,4 +1,5 @@
-import { isActiveParticipant, normalizedParticipantName, orderIdOf, paidParticipant, projectRegistration, updateOrderBank, validateParticipants } from './registration-order-model.js';
+import { registrationClosed } from './event-export-model.js';
+import { isActiveParticipant, orderFromRows, setOrderReconciliation, orderIdOf, paidParticipant, projectRegistration, updateOrderBank, validateParticipants } from './registration-order-model.js';
 export const creditBalance=(ledger,memberId)=>ledger.filter(entry=>entry.memberId===memberId).reduce((sum,entry)=>sum+entry.amount,0);
 export function memberCanCancel(event, now=Date.now()){
  const closes=event?.closes;
@@ -30,10 +31,10 @@ export function commitRegistration(state,record,event,actor,now=new Date().toISO
   if(walletDue<=0||creditBalance(ledger,actor.id)<walletDue)throw new Error('儲值金餘額不足，請改用原付款方式。');
   ledger=[...ledger,{id:crypto.randomUUID(),key:paymentKey,memberId:actor.id,amount:-walletDue,kind:'PAYMENT',orderId:record.id,eventId:event.id,eventName:event.name,actorId:actor.id,at:now}];
  }
- projected=projected.map(row=>{const previous=old.find(item=>item.id===row.id);return {...previous,...row,...(previous&&previous.payment===row.payment&&previous.amount===row.amount?{status:previous.status}:{})};});
+ projected=projected.map(row=>{const previous=old.find(item=>item.id===row.id);return {...previous,...row,source:previous?.source||row.source,...(previous&&previous.payment===row.payment&&previous.amount===row.amount?{status:previous.status}:{})};});
  const removed=oldActive.filter(row=>!projected.some(next=>next.id===row.id));
  const retained=state.rows.filter(row=>!projected.some(next=>next.id===row.id)).map(row=>removed.some(item=>item.id===row.id)?{...row,recordState:'REMOVED',removedAt:now}:row);
- return {rows:updateOrderBank([...retained,...projected],record.id,{last5:record.last5,date:record.date},actor.id),ledger};
+ return {rows:bank?updateOrderBank([...retained,...projected],record.id,{last5:record.last5,date:record.date},actor.id):[...retained,...projected],ledger};
 }
 export function cancellationQuote(state,rowIds,actor,creditMemberId){
  ensureMember(actor);const selected=state.rows.filter(row=>rowIds.includes(row.id));if(!selected.length)throw new Error('找不到報名紀錄。');
@@ -43,11 +44,41 @@ export function cancellationQuote(state,rowIds,actor,creditMemberId){
  if(credits.some(entry=>!entry.memberId))throw new Error('本筆未關聯付款會員，請管理員先指定儲值金入帳會員。');
  return {rows,credits,amount:credits.reduce((sum,entry)=>sum+entry.amount,0)};
 }
-export function cancelParticipants(state,rowIds,actor,{reason='',creditMemberId,members=[],now=new Date().toISOString()}={}){
+export function cancellationAllowed(actor,source,event,now=Date.now()){
+ if(!actor?.id)return false;
+ return source==='ADMIN_BACKOFFICE'?canManage(actor)&&Boolean(event)&&registrationClosed(event,Number(new Date(now))):source==='MEMBER_SELF'&&memberCanCancel(event,now);
+}
+function settleCancelledCredits(state,actor,{members=[],creditMemberId,now=new Date().toISOString()}={}){
+ const refundable=state.rows.filter(row=>row.cancelledAt&&paidParticipant(row)&&!row.creditReturned);
+ const ledger=[...state.ledger];
+ const patches=new Map();
+ for(const row of refundable){
+  if(!Number.isSafeInteger(row.amount)||row.amount<0)throw new Error('報名金額無效，請先核對帳務。');
+  const memberId=row.ownerId||row.memberId||row.creditMemberId||creditMemberId;
+  if(!members.some(member=>member.id===memberId))throw new Error('入帳會員不存在，請指定原付款會員。');
+  const key=`cancel:${row.id}`;
+  if(!ledger.some(entry=>entry.key===key))ledger.push({id:crypto.randomUUID(),key,memberId,amount:row.amount,kind:'CANCELLATION',orderId:orderIdOf(row),rowId:row.id,eventId:row.eventId,eventName:row.eventName||'',participantName:row.displayNameOverride||row.nickname||row.name,actorId:actor.id,at:now});
+  patches.set(row.id,{creditReturned:row.amount,creditMemberId:memberId,creditedAt:now});
+ }
+ return {rows:state.rows.map(row=>patches.has(row.id)?{...row,...patches.get(row.id)}:row),ledger};
+}
+export function cancelParticipants(state,rowIds,actor,{reason='',creditMemberId,members=[],source=canManage(actor)?'ADMIN_BACKOFFICE':'MEMBER_SELF',now=new Date().toISOString()}={}){
+ if(!['ADMIN_BACKOFFICE','MEMBER_SELF'].includes(source)||source==='ADMIN_BACKOFFICE'&&!canManage(actor))throw new Error('沒有後台取消權限。');
  const quote=cancellationQuote(state,rowIds,actor,creditMemberId);if(!quote.rows.length)return state;
+ if(source==='MEMBER_SELF'&&quote.rows.some(row=>(row.ownerId||row.memberId)!==actor.id))throw new Error('不可自行取消他人的報名。');
  if(quote.credits.some(entry=>!members.some(member=>member.id===entry.memberId)))throw new Error('入帳會員不存在，無法取消已付款報名。');
- let ledger=[...state.ledger];
- for(const credit of quote.credits){const key=`cancel:${credit.rowId}`;if(ledger.some(entry=>entry.key===key))continue;const row=quote.rows.find(item=>item.id===credit.rowId);ledger.push({id:crypto.randomUUID(),key,memberId:credit.memberId,amount:credit.amount,kind:'CANCELLATION',orderId:orderIdOf(row),rowId:row.id,eventId:row.eventId,eventName:row.eventName||'',participantName:row.nickname||row.name,actorId:actor.id,at:now});}
- const rows=state.rows.map(row=>quote.rows.some(item=>item.id===row.id)?{...row,recordState:'CANCELLED',cancelledAt:now,cancellationReason:reason.trim(),cancelledBy:actor.id,creditReturned:quote.credits.find(entry=>entry.rowId===row.id)?.amount||0,creditMemberId:quote.credits.find(entry=>entry.rowId===row.id)?.memberId||null}:row);
- return {rows,ledger};
+ const ids=new Set(quote.rows.map(row=>row.id));
+ const rows=state.rows.map(row=>ids.has(row.id)?{...row,recordState:'CANCELLED',cancelledAt:now,cancellationSource:source,cancellationReason:reason.trim(),cancelledBy:actor.id,creditReturned:0,creditMemberId:row.ownerId||row.memberId||creditMemberId||null}:row);
+ const scoped={rows:rows.filter(row=>ids.has(row.id)),ledger:state.ledger};
+ const settled=settleCancelledCredits(scoped,actor,{members,creditMemberId,now});
+ return {rows:rows.map(row=>settled.rows.find(item=>item.id===row.id)||row),ledger:settled.ledger};
+}
+export function reconcileRegistration(state,id,reconciled,actor,{members=[],creditMemberId,now=new Date().toISOString()}={}){
+ ensureMember(actor);if(!canManage(actor))throw new Error('沒有管理對帳的權限。');
+ const order=orderFromRows(state.rows,id);if(!order)throw new Error('找不到報名紀錄。');
+ if(!reconciled&&order.all.some(row=>row.payment==='BANK_TRANSFER'&&row.creditReturned>0))throw new Error('本筆銀行款已回存儲值金，無法取消對帳。');
+ const rows=setOrderReconciliation(state.rows,id,reconciled,actor.id,now);
+ if(!reconciled)return {...state,rows};
+ const scoped=settleCancelledCredits({rows:rows.filter(row=>orderIdOf(row)===id),ledger:state.ledger},actor,{members,creditMemberId,now});
+ return {rows:rows.map(row=>scoped.rows.find(item=>item.id===row.id)||row),ledger:scoped.ledger};
 }
