@@ -3,7 +3,7 @@ import { CheckCircle, Plus } from '@phosphor-icons/react';
 import { optionErrors } from './access-model.js';
 import './access-settings.css';
 
-const definitions=[{key:'registrationModes',name:'報名模式',fixed:true,hint:'單人／多人流程可改名或停用；已成立報名仍可查閱。'},{key:'registrationFees',name:'報名繳費選項',fixed:true,hint:'選項可改名／停用，費率於下方設定；既有報名保留原費用。'},{key:'articleCategories',name:'文章分類',hint:'新增文章可選啟用分類；停用不移除既有文章。'},{key:'memberLabels',name:'會員標籤',hint:'可新增會員分類標籤，停用後保留既有標注。'}];
+const definitions=[{key:'participantResidencies',name:'參賽者國籍分類',fixed:true,hint:'分類名稱可調整，已成立報名保留分類；本國／外國的付款規則保持固定。'},{key:'feedbackTypes',name:'回饋類型',hint:'可新增、改名或停用；停用不刪除既有回饋紀錄。'},{key:'registrationModes',name:'報名模式',fixed:true,hint:'單人／多人流程可改名或停用；已成立報名仍可查閱。'},{key:'registrationFees',name:'報名繳費選項',fixed:true,hint:'選項可改名／停用，費率於下方設定；既有報名保留原費用。'},{key:'articleCategories',name:'文章分類',hint:'新增文章可選啟用分類；停用不移除既有文章。'},{key:'memberLabels',name:'會員標籤',hint:'可新增會員分類標籤，停用後保留既有標注。'}];
 export function OptionParameters({value,onSave,onRoles,onAssignments,onTags}) {
   const [draft,setDraft]=useState(value),[errors,setErrors]=useState([]),[saved,setSaved]=useState(false);
   function update(key,id,patch){setDraft(previous=>({...previous,[key]:previous[key].map(item=>item.id===id?{...item,...patch}:item)}));setSaved(false);}

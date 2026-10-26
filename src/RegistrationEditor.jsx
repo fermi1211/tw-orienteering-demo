@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { ArrowRight, LockSimple, UserCircle, UserPlus } from '@phosphor-icons/react';
 
 const fees={MEMBER:'會員',LEGACY_PREPAID:'舊制已預繳',SINGLE:'單次報名'};
-const methods={NOT_REQUIRED:'不需繳款資料',BANK_TRANSFER:'銀行轉帳',ONSITE:'現場繳費',ADMIN_CONFIRMED:'管理員確認已繳款'};
+const methods={NOT_REQUIRED:'不需繳款資料',BANK_TRANSFER:'銀行轉帳',ONSITE:'現場繳費',ADMIN_CONFIRMED:'管理員確認已繳款',WALLET:'儲值金付款'};
 
-export function RegistrationEditor({initial,event,Dialog,onClose,onSave,memberCatalog=initialDemoMembers}) {
+export function RegistrationEditor({serverError,initial,event,Dialog,onClose,onSave,memberCatalog=initialDemoMembers}) {
   const [source,setSource]=useState('MEMBER'),[memberId,setMemberId]=useState(''),[division,setDivision]=useState(initial?.division||event.divisions[0]||''),[fee,setFee]=useState(initial?.fee||'SINGLE'),[payment,setPayment]=useState('BANK_TRANSFER'),[displayName,setDisplayName]=useState(initial?.displayNameOverride||''),[paidOption,setPaidOption]=useState(''),[errors,setErrors]=useState({});
   const members=memberCatalog;
   const person=initial||members.find(member=>member.id===memberId),guest=initial?initial.source==='MANUAL_GUEST':source==='GUEST';
@@ -27,5 +27,5 @@ export function RegistrationEditor({initial,event,Dialog,onClose,onSave,memberCa
       {!initial&&<><details className="terms"><summary>閱讀本場示範活動告知</summary>{event.terms.length?event.terms.map(term=><div key={term.id}><strong>{term.title}</strong><p>{term.content}</p></div>):<p>本場未設定活動條款；請確認參賽者同意建立此筆示範報名。</p>}</details><label className="consent"><input type="checkbox" name="consent" required aria-describedby={errors.consent?'roster-consent-error':undefined}/><span>已取得參賽者同意報名及適用的活動告知</span></label>{error('consent')}</>}
     </>}
     {initial&&<><dl className="member-registration-summary"><div><dt>費用</dt><dd>{fees[initial.fee]} · NT${initial.amount}</dd></div><div><dt>付款方式</dt><dd>{methods[initial.payment]}</dd></div>{initial.payment==='BANK_TRANSFER'&&<><div><dt>帳號末五碼</dt><dd>{initial.last5}</dd></div><div><dt>繳款日期</dt><dd>{initial.date}</dd></div></>}</dl><p className="locked-note"><LockSimple size={18}/>此處僅修改組別及顯示名稱；會員與付款原始資料維持不變。</p></>}
-    {Object.keys(errors).length>0&&<p role="alert" className="form-error">請完成標示的欄位後再送出。</p>}<div className="admin-editor-actions"><button className="secondary" type="button" onClick={onClose}>取消</button><button className="primary" type="submit">{initial?'儲存報名資料':'建立示範報名'}<ArrowRight size={18}/></button></div></form></Dialog>;
+    {serverError&&<p className="form-error" role="alert">{serverError}</p>}{Object.keys(errors).length>0&&<p role="alert" className="form-error">請完成標示的欄位後再送出。</p>}<div className="admin-editor-actions"><button className="secondary" type="button" onClick={onClose}>取消</button><button className="primary" type="submit">{initial?'儲存報名資料':'建立示範報名'}<ArrowRight size={18}/></button></div></form></Dialog>;
 }

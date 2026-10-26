@@ -2,7 +2,7 @@
 .modal.wide:has(.group-registration){width:min(960px,calc(100% - 32px))}.group-registration .group-table{min-width:760px}.group-table input:focus,.group-table select:focus{outline:2px solid #8b7957;outline-offset:2px}.order-ledger-card strong,.order-ledger-card p,.order-ledger-card header{overflow-wrap:anywhere}.order-ledger .field-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.order-ledger input[type=date]{min-width:0;width:100%}@media(max-width:600px){.group-registration .form-footer{flex-direction:column;align-items:stretch}.group-registration .form-footer .primary{width:100%;white-space:nowrap}.group-registration .steps{gap:12px}.order-ledger .field-grid{grid-template-columns:minmax(0,1fr)}}
 
 /* Participant fields stack into cards on phones and narrow tablets. */
-@media(max-width:900px){
+@media(max-width:1100px){
  .group-registration .group-table-scroll,.my-group-table .group-table-scroll{overflow:visible;border:0;border-radius:0;outline-offset:4px}
  .group-registration .group-table,.my-group-table .group-table{display:block;min-width:0;width:100%}
  .group-registration .group-table caption,.my-group-table .group-table caption{display:block}
@@ -20,3 +20,5 @@
  .group-heading{align-items:flex-start;flex-direction:column}
  .group-review>div{min-width:0}.group-review>div>span{min-width:0;overflow-wrap:anywhere}.group-review>div>strong{white-space:nowrap}
 }
+
+.modal.wide:has(.group-registration){width:min(1120px,calc(100% - 32px))}

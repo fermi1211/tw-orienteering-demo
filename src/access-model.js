@@ -1,7 +1,9 @@
+import { initialFeedbackTypes } from './feedback-model.js';
 export const screenCatalog = [
   {id:'events',name:'賽事列表與賽事資訊',area:'公開畫面',public:true},
   {id:'journal',name:'定向專欄與文章閱讀',area:'公開畫面',public:true},
   {id:'signup',name:'會員註冊',area:'公開畫面',public:true},
+  {id:'feedback',name:'意見回饋送出',area:'會員畫面'},
   {id:'registrations',name:'我的報名',area:'會員畫面'},
   {id:'profile',name:'會員資料管理',area:'會員畫面'},
   {id:'register',name:'賽事報名與修改',area:'會員畫面'},
@@ -12,17 +14,20 @@ export const screenCatalog = [
   {id:'admin.exports',name:'名單與出發序',area:'後台畫面'},
   {id:'admin.settings',name:'參數設定',area:'後台畫面'},
   {id:'admin.tags',name:'會員標注',area:'後台畫面'},
+  {id:'admin.feedback',name:'意見回饋管理',area:'後台畫面',adminOnly:true},
   {id:'admin.members',name:'會員主檔管理',area:'後台畫面',adminOnly:true},
   {id:'admin.roles',name:'角色與畫面權限',area:'後台畫面',adminOnly:true},
   {id:'admin.assignments',name:'會員角色指派',area:'後台畫面',adminOnly:true},
 ];
 export const initialRoles = [
   {id:'GUEST',name:'未登入',active:true,system:true,screens:['events','journal','signup']},
-  {id:'MEMBER',name:'一般會員',active:true,screens:['events','journal','registrations','profile','register']},
+  {id:'MEMBER',name:'一般會員',active:true,screens:['events','journal','registrations','profile','register','feedback']},
   {id:'MANAGER',name:'管理員',active:true,screens:screenCatalog.filter(page=>!page.adminOnly&&page.id!=='signup').map(page=>page.id)},
   {id:'ADMIN',name:'系統 admin',active:true,system:true,screens:screenCatalog.map(page=>page.id)},
 ];
 export const initialOptionSets = {
+  feedbackTypes:initialFeedbackTypes,
+  participantResidencies:[{id:'DOMESTIC',name:'本國人',active:true},{id:'FOREIGN',name:'外國人',active:true}],
   registrationModes:[{id:'SINGLE',name:'單人報名',active:true},{id:'MULTI',name:'多人報名',active:true}],
   registrationFees:[{id:'SINGLE',name:'單次報名',active:true},{id:'MEMBER',name:'會員',active:true},{id:'LEGACY_PREPAID',name:'舊制已預繳',active:true}],
   articleCategories:['定向入門','讀圖技巧','參賽準備'].map(name=>({id:name,name,active:true})),

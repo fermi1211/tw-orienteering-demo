@@ -1,6 +1,7 @@
+import { isActiveParticipant } from './registration-order-model.js';
 export const exportDisplayName = row => row.displayNameOverride?.trim() || row.nickname?.trim() || row.name?.trim() || '';
 export function activeEventRows(rows, eventId) {
-  return rows.filter(row => row.eventId === eventId && !row.deletedAt && !['DELETED', 'DUPLICATE'].includes(row.recordState || row.record_state));
+  return rows.filter(row => row.eventId === eventId && isActiveParticipant(row));
 }
 export function registrationClosed(event, now = Date.now()) {
   if (event.status !== 'PUBLISHED' || !event.closes) return false;
