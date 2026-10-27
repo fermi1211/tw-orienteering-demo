@@ -1,3 +1,4 @@
+import {feeOptionIdOf,validateFeeSnapshot} from './event-options-model.js';
 import { registrationClosed } from './event-export-model.js';
 import { isActiveParticipant, orderFromRows, setOrderReconciliation, orderIdOf, paidParticipant, projectRegistration, updateOrderBank, validateParticipants } from './registration-order-model.js';
 export const creditBalance=(ledger,memberId)=>ledger.filter(entry=>entry.memberId===memberId).reduce((sum,entry)=>sum+entry.amount,0);
@@ -16,11 +17,12 @@ export function commitRegistration(state,record,event,actor,now=new Date().toISO
  if(new Set(projected.map(row=>row.id)).size!==projected.length||projected.some(row=>state.rows.some(existing=>existing.id===row.id&&orderIdOf(existing)!==record.id)))throw new Error('參賽者編號衝突，請重新建立。');
  if(old.some(row=>row.ownerId!==actor.id))throw new Error('不可修改他人的報名。');
  const items=projected.map(row=>({name:row.nickname,group:row.division,residency:row.residency,payment:row.payment}));
- const invalid=validateParticipants(items,event.divisions,{requireResidency:true,existingRows:state.rows,ownerId:actor.id,eventId:event.id,orderId:record.id});if(invalid)throw new Error(invalid);
+ if(projected.some(row=>!event.divisions.includes(row.division)&&!old.some(previous=>previous.id===row.id&&previous.division===row.division)))throw new Error('請選擇有效的參賽組別。');
+ const invalid=validateParticipants(items,[...event.divisions,...old.map(row=>row.division)],{requireResidency:true,existingRows:state.rows,ownerId:actor.id,eventId:event.id,orderId:record.id});if(invalid)throw new Error(invalid);
  if(old.some(row=>row.cancelledAt&&projected.some(next=>next.id===row.id)))throw new Error('已取消參賽者不能從編輯表單復原，請重新報名。');
  const oldActive=old.filter(isActiveParticipant),locked=oldActive.some(paidParticipant);
- if(locked&&(oldActive.length!==projected.length||oldActive.some(row=>!projected.some(next=>next.id===row.id&&next.amount===row.amount&&next.fee===row.fee&&next.payment===row.payment))))throw new Error('已付款的參賽人數、費用及付款方式請聯絡管理員處理；取消報名請使用取消功能。');
- for(const row of projected){const previous=old.find(item=>item.id===row.id);const expected=previous&&previous.fee===row.fee?previous.amount:event.fees[row.fee];if(!Number.isSafeInteger(row.amount)||row.amount<0||row.amount!==expected)throw new Error('報名金額已變更，請重新確認系統費用。');if(!['MEMBER','LEGACY_PREPAID','SINGLE'].includes(row.fee))throw new Error('無效費用類別。');if(row.fee!=='SINGLE'&&row.payment!=='NOT_REQUIRED')throw new Error('免繳款項目不可使用付款方式。');if(row.fee==='SINGLE'&&!['BANK_TRANSFER','ONSITE','WALLET'].includes(row.payment)&&!(previous?.payment==='ADMIN_CONFIRMED'&&row.payment===previous.payment))throw new Error('請選擇有效付款方式。');if(previous?.cancelledAt||previous?.deletedAt)throw new Error('停用參賽者不可從一般編輯表單修改。');}
+ if(locked&&(oldActive.length!==projected.length||oldActive.some(row=>!projected.some(next=>next.id===row.id&&next.amount===row.amount&&next.fee===row.fee&&feeOptionIdOf(next)===feeOptionIdOf(row)&&next.payment===row.payment))))throw new Error('已付款的參賽人數、費用及付款方式請聯絡管理員處理；取消報名請使用取消功能。');
+ for(const row of projected){const previous=old.find(item=>item.id===row.id);const feeError=validateFeeSnapshot(row,event,previous);if(feeError)throw new Error(feeError);if(!['MEMBER','LEGACY_PREPAID','SINGLE'].includes(row.fee))throw new Error('無效費用類別。');if(row.fee!=='SINGLE'&&row.payment!=='NOT_REQUIRED')throw new Error('免繳款項目不可使用付款方式。');if(row.fee==='SINGLE'&&!['BANK_TRANSFER','ONSITE','WALLET'].includes(row.payment)&&!(previous?.payment==='ADMIN_CONFIRMED'&&row.payment===previous.payment))throw new Error('請選擇有效付款方式。');if(previous?.cancelledAt||previous?.deletedAt)throw new Error('停用參賽者不可從一般編輯表單修改。');}
  const bank=projected.some(row=>row.payment==='BANK_TRANSFER');if(bank&&(!/^\d{5}$/.test(record.last5)||!record.date))throw new Error('請填寫完整銀行轉帳資料。');
  let ledger=state.ledger;
  const walletRows=projected.filter(row=>row.payment==='WALLET'),walletDue=walletRows.reduce((sum,row)=>sum+row.amount,0),paymentKey=`wallet-pay:${record.id}`;
@@ -31,7 +33,7 @@ export function commitRegistration(state,record,event,actor,now=new Date().toISO
   if(walletDue<=0||creditBalance(ledger,actor.id)<walletDue)throw new Error('儲值金餘額不足，請改用原付款方式。');
   ledger=[...ledger,{id:crypto.randomUUID(),key:paymentKey,memberId:actor.id,amount:-walletDue,kind:'PAYMENT',orderId:record.id,eventId:event.id,eventName:event.name,actorId:actor.id,at:now}];
  }
- projected=projected.map(row=>{const previous=old.find(item=>item.id===row.id);return {...previous,...row,source:previous?.source||row.source,...(previous&&previous.payment===row.payment&&previous.amount===row.amount?{status:previous.status}:{})};});
+ projected=projected.map(row=>{const previous=old.find(item=>item.id===row.id);return {...previous,...row,...(previous&&feeOptionIdOf(previous)===feeOptionIdOf(row)&&previous.feeName?{feeName:previous.feeName}:{}),source:previous?.source||row.source,...(previous&&previous.payment===row.payment&&previous.amount===row.amount?{status:previous.status}:{})};});
  const removed=oldActive.filter(row=>!projected.some(next=>next.id===row.id));
  const retained=state.rows.filter(row=>!projected.some(next=>next.id===row.id)).map(row=>removed.some(item=>item.id===row.id)?{...row,recordState:'REMOVED',removedAt:now}:row);
  return {rows:bank?updateOrderBank([...retained,...projected],record.id,{last5:record.last5,date:record.date},actor.id):[...retained,...projected],ledger};

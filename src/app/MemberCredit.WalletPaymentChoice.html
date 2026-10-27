@@ -1,0 +1,35 @@
+<ng-container [viewFragment]="view" [viewOwner]="this" [viewRevision]="fragments.size"/>
+<ng-template viewAnchor="text" let-c>{{c.value}}</ng-template>
+<ng-template viewAnchor="fragment0" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment1" let-c>
+<legend><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/>儲值金付款</legend>
+</ng-template>
+<ng-template viewAnchor="fragment2" let-c>
+<p class="hint">可用 NT$<ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/> · 本次應繳 NT$<ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></p>
+</ng-template>
+<ng-template viewAnchor="fragment3" let-c>
+<input type="radio" name="wallet-choice" [checked]="c.v0" (change)="c.v1($event)">
+</ng-template>
+<ng-template viewAnchor="fragment4" let-c>
+<span>使用原付款方式</span>
+</ng-template>
+<ng-template viewAnchor="fragment5" let-c>
+<label [attr.class]="c.v0"><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/></label>
+</ng-template>
+<ng-template viewAnchor="fragment6" let-c>
+<input type="radio" name="wallet-choice" [checked]="c.v0" (change)="c.v1($event)">
+</ng-template>
+<ng-template viewAnchor="fragment7" let-c>
+<span>使用儲值金全額付款</span>
+</ng-template>
+<ng-template viewAnchor="fragment8" let-c>
+<strong>NT$<ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></strong>
+</ng-template>
+<ng-template viewAnchor="fragment9" let-c>
+<label [attr.class]="c.v0"><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v3" [viewOwner]="this" [viewRevision]="fragments.size"/></label>
+</ng-template>
+<ng-template viewAnchor="fragment10" let-c>
+<fieldset class="wallet-choice"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v3" [viewOwner]="this" [viewRevision]="fragments.size"/></fieldset>
+</ng-template>

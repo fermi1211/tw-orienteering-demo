@@ -1,0 +1,38 @@
+<ng-container [viewFragment]="view" [viewOwner]="this" [viewRevision]="fragments.size"/>
+<ng-template viewAnchor="text" let-c>{{c.value}}</ng-template>
+<ng-template viewAnchor="fragment0" let-c>
+<img [attr.src]="c.v0" [attr.alt]="c.v1">
+</ng-template>
+<ng-template viewAnchor="fragment1" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment2" let-c>
+<span><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/>放大查看</span>
+</ng-template>
+<ng-template viewAnchor="fragment3" let-c>
+<button type="button" class="attachment-thumbnail" (click)="c.v0($event)" [attr.aria-label]="c.v1"><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v3" [viewOwner]="this" [viewRevision]="fragments.size"/></button>
+</ng-template>
+<ng-template viewAnchor="fragment4" let-c>
+<input [formValue]="c.v0" [maxLength]="c.v1" (input)="c.v2($event)" placeholder="例如：活動路線與集合位置">
+</ng-template>
+<ng-template viewAnchor="fragment5" let-c>
+<label class="field">圖片說明<ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></label>
+</ng-template>
+<ng-template viewAnchor="fragment6" let-c>
+<p><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></p>
+</ng-template>
+<ng-template viewAnchor="fragment7" let-c>
+<span><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></span>
+</ng-template>
+<ng-template viewAnchor="fragment8" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment9" let-c>
+<button type="button" class="text-button danger-text" (click)="c.v0($event)" [attr.aria-label]="c.v1"><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/>移除</button>
+</ng-template>
+<ng-template viewAnchor="fragment10" let-c>
+<div class="attachment-meta"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>
+<ng-template viewAnchor="fragment11" let-c>
+<article class="attachment-image"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/></article>
+</ng-template>

@@ -54,15 +54,16 @@ test('empty content, missing titles and excessive images block publication while
   assert.match(articlePublishErrors({...draft,content:{type:'doc',content:[{type:'paragraph'}]}}).join(' '),/內容/);
   assert.throws(()=>saveArticleRecord({id:'empty'},{title:'',content:{type:'doc'}},true),/標題/);
   assert.equal(saveArticleRecord({id:'empty'},{title:'',content:{type:'doc'}},false).published,null);
-  const images=Array.from({length:11},()=>content.content[3]);
-  assert.match(articlePublishErrors({...draft,content:{type:'doc',content:images}}).join(' '),/10 張/);
+  const images=Array.from({length:31},()=>content.content[3]);
+  assert.match(articlePublishErrors({...draft,content:{type:'doc',content:images}}).join(' '),/30 張/);
   assert.deepEqual(articlePublishErrors(draft),[]);
 });
 test('image file limits and stored sizes keep article figures responsive',()=>{
   assert.match(articleImageProblem({type:'image/svg+xml',size:500}),/JPG/);
-  assert.match(articleImageProblem({type:'image/png',size:6*1024*1024}),/5 MB/);
+  assert.match(articleImageProblem({type:'image/png',size:11*1024*1024}),/10 MB/);
   assert.match(articleImageProblem({type:'image/jpeg',size:0}),/為空/);
-  assert.equal(articleImageProblem({type:'image/webp',size:1024}),'');
+  assert.match(articleImageProblem({type:'image/webp',size:1024}),/JPG/);
+  assert.equal(articleImageProblem({type:'image/png',size:10*1024*1024}),'');
   const safe=sanitizeArticleDocument({type:'doc',content:[{...content.content[3],attrs:{...content.content[3].attrs,width:999,align:'evil'}}]});
   assert.equal(safe.content[0].attrs.width,100);
   assert.equal(safe.content[0].attrs.align,'center');
@@ -75,4 +76,9 @@ test('color parsing, reading estimate and depth bounds handle pasted content saf
   assert.match(articleText(content),/地圖描述/);
   let node={type:'text',text:'過深'};for(let index=0;index<30;index++)node={type:'blockquote',content:[node]};
   assert.equal(JSON.stringify(sanitizeArticleDocument({type:'doc',content:[node]})).includes('過深'),false);
+});
+
+test('article draft previews tolerate missing dates without preventing dialog initialization',async()=>{
+ const {articleDate}=await import('../src/article-model.js');
+ assert.equal(articleDate(undefined),'尚未發布');assert.equal(articleDate('invalid'),'尚未發布');assert.equal(articleDate('2026-10-28T00:00:00+08:00'),'2026/10/28');
 });

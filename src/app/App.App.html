@@ -1,0 +1,220 @@
+<ng-container [viewFragment]="view" [viewOwner]="this" [viewRevision]="fragments.size"/>
+<ng-template viewAnchor="text" let-c>{{c.value}}</ng-template>
+<ng-template viewAnchor="fragment0" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment1" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment2" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment3" let-c>
+<ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/>
+</ng-template>
+<ng-template viewAnchor="fragment4" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment5" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment6" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment7" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment8" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment9" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment10" let-c>
+<button class="text-button" (click)="c.v0($event)">返回賽事列表</button>
+</ng-template>
+<ng-template viewAnchor="fragment11" let-c>
+<h1>暫時無法查看此賽事</h1>
+</ng-template>
+<ng-template viewAnchor="fragment12" let-c>
+<p>此賽事尚未公開，或本次預覽資料已重設。</p>
+</ng-template>
+<ng-template viewAnchor="fragment13" let-c>
+<main id="main" class="single-event-page"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/></main>
+</ng-template>
+<ng-template viewAnchor="fragment14" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment15" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment16" let-c>
+<a href="#main" class="skip-link">跳至主要內容</a>
+</ng-template>
+<ng-template viewAnchor="fragment17" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment18" let-c>
+<span>台灣定向</span>
+</ng-template>
+<ng-template viewAnchor="fragment19" let-c>
+<button class="brand" (click)="c.v0($event)" aria-label="台灣定向首頁"><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/></button>
+</ng-template>
+<ng-template viewAnchor="fragment20" let-c>
+<button [attr.aria-current]="c.v0" (click)="c.v1($event)"><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/></button>
+</ng-template>
+<ng-template viewAnchor="fragment21" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment22" let-c>
+<ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/>登出
+</ng-template>
+<ng-template viewAnchor="fragment23" let-c>
+<button class="login-button" (click)="c.v0($event)"><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></button>
+</ng-template>
+<ng-template viewAnchor="fragment24" let-c>
+<nav class="desktop-nav" aria-label="主選單" (click)="closeNavigationMenu($event)"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></nav>
+</ng-template>
+<ng-template viewAnchor="fragment25" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment26" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment27" let-c>
+<button class="icon-button mobile-menu" [attr.aria-expanded]="c.v0" aria-controls="mobile-nav" [attr.aria-label]="c.v1" (click)="c.v2($event)"><ng-container [viewFragment]="c.v3" [viewOwner]="this" [viewRevision]="fragments.size"/></button>
+</ng-template>
+<ng-template viewAnchor="fragment28" let-c><header class="site-header"><button class="brand" (click)="closeNavigationMenu($event);ui.open('events')" aria-label="台灣定向首頁"><demo-icon [props]="{name:'mountains',size:49,weight:'bold'}"/><span>台灣定向</span></button><nav class="desktop-nav" aria-label="主選單" (click)="closeNavigationMenu($event)"><button [attr.aria-current]="ui.view==='events'?'page':null" (click)="closeNavigationMenu($event);ui.open('events')">賽事列表</button><button [attr.aria-current]="ui.view==='journal'?'page':null" (click)="closeNavigationMenu($event);ui.open('journal')">定向專欄</button>@if(ui.user){<details class="screen-public-account"><summary>{{ui.profile.nickname||ui.profile.name}}<demo-icon [props]="{name:'caret-down',size:14}"/></summary><div>@if(ui.can('registrations')){<button (click)="closeNavigationMenu($event);ui.open('registrations')">我的報名</button>}@if(ui.can('profile')){<button (click)="closeNavigationMenu($event);ui.open('profile')">會員資料</button>}@if(ui.adminAllowed){<button (click)="closeNavigationMenu($event);ui.open('admin')">管理後台</button>}<button (click)="closeNavigationMenu($event);ui.logout()">登出</button></div></details>}@else{<button class="login-button" (click)="ui.loginButton()">登入</button>}</nav><button class="icon-button mobile-menu" [attr.aria-expanded]="ui.menu" aria-label="開啟選單" (click)="ui.setMenu(!ui.menu)"><demo-icon [props]="{name:ui.menu?'x':'list',size:26}"/></button></header></ng-template>
+<ng-template viewAnchor="fragment29" let-c>
+<div class="site-header-spacer" aria-hidden="true"></div>
+</ng-template>
+<ng-template viewAnchor="fragment30" let-c>
+<button [attr.aria-current]="c.v0" (click)="c.v1($event)"><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/></button>
+</ng-template>
+<ng-template viewAnchor="fragment31" let-c>
+<button (click)="c.v0($event)"><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></button>
+</ng-template>
+<ng-template viewAnchor="fragment32" let-c>
+<nav id="mobile-nav" class="mobile-nav" aria-label="手機選單"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></nav>
+</ng-template>
+<ng-template viewAnchor="fragment33" let-c>
+<p class="access-alert" role="alert"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></p>
+</ng-template>
+<ng-template viewAnchor="fragment34" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment35" let-c>
+<button class="feedback-footer-button" (click)="c.v0($event)"><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/>意見回饋</button>
+</ng-template>
+<ng-template viewAnchor="fragment36" let-c>
+<div><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>
+<ng-template viewAnchor="fragment37" let-c>
+<a href="?view=signup" (click)="c.v0($event)">會員註冊畫面</a>
+</ng-template>
+<ng-template viewAnchor="fragment38" let-c>
+<a href="?view=profile" (click)="c.v0($event)">會員資料管理</a>
+</ng-template>
+<ng-template viewAnchor="fragment39" let-c>
+<a href="?view=registrations&amp;demo=multiple" (click)="c.v0($event)">多場報名畫面（示範）</a>
+</ng-template>
+<ng-template viewAnchor="fragment40" let-c>
+<a href="?view=admin" (click)="c.v0($event)">管理後台畫面（預覽）</a>
+</ng-template>
+<ng-template viewAnchor="fragment41" let-c>
+<details class="screen-preview-tools" (click)="closeNavigationMenu($event)"><summary>Demo 畫面預覽</summary><nav class="preview-links" aria-label="畫面預覽"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v3" [viewOwner]="this" [viewRevision]="fragments.size"/></nav></details>
+</ng-template>
+<ng-template viewAnchor="fragment42" let-c>
+<footer class="prototype-note"><span class="footer-brand">台灣定向　TAIWAN ORIENTEERING</span><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><span>概念示範 · 資料僅保留於本次預覽</span><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></footer>
+</ng-template>
+<ng-template viewAnchor="fragment43" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment44" let-c>
+<p class="dialog-subtitle">選擇示範會員，預覽已指派角色的可見畫面。請勿輸入真實個資。</p>
+</ng-template>
+<ng-template viewAnchor="fragment45" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment46" let-c>
+<button [attr.class]="c.v0" (click)="c.v1($event)"><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/> · <ng-container [viewFragment]="c.v3" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v4" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v5" [viewOwner]="this" [viewRevision]="fragments.size"/></button>
+</ng-template>
+<ng-template viewAnchor="fragment47" let-c>
+<div class="login-options"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>
+<ng-template viewAnchor="fragment48" let-c>
+<button class="text-button" (click)="c.v0($event)">還沒有帳號？建立會員帳號</button>
+</ng-template>
+<ng-template viewAnchor="fragment49" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment50" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment51" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment52" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment53" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment54" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment55" let-c>
+<p class="success-status"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></p>
+</ng-template>
+<ng-template viewAnchor="fragment56" let-c>
+<strong><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></strong>
+</ng-template>
+<ng-template viewAnchor="fragment57" let-c>
+<p>示範報名編號 <ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></p>
+</ng-template>
+<ng-template viewAnchor="fragment58" let-c>
+<span>賽事</span>
+</ng-template>
+<ng-template viewAnchor="fragment59" let-c>
+<strong><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></strong>
+</ng-template>
+<ng-template viewAnchor="fragment60" let-c>
+<div><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>
+<ng-template viewAnchor="fragment61" let-c>
+<span>組別</span>
+</ng-template>
+<ng-template viewAnchor="fragment62" let-c>
+<strong><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></strong>
+</ng-template>
+<ng-template viewAnchor="fragment63" let-c>
+<div><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>
+<ng-template viewAnchor="fragment64" let-c>
+<span>應繳金額</span>
+</ng-template>
+<ng-template viewAnchor="fragment65" let-c>
+<strong><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></strong>
+</ng-template>
+<ng-template viewAnchor="fragment66" let-c>
+<div><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>
+<ng-template viewAnchor="fragment67" let-c>
+<div class="summary"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>
+<ng-template viewAnchor="fragment68" let-c>
+<p class="hint">此為示範結果，未建立真實報名或寄送郵件。</p>
+</ng-template>
+<ng-template viewAnchor="fragment69" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment70" let-c>
+<button class="primary" (click)="c.v0($event)">查看我的報名<ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></button>
+</ng-template>
+<ng-template viewAnchor="fragment71" let-c><div class="screen-success"><p>感謝您的報名，以下為本次報名資訊。</p><div class="screen-order-number">整筆報名編號<strong>{{ui.current.id}}</strong></div><h3>報名明細</h3><table class="screen-table"><thead><tr><th>暱稱</th><th>組別</th><th>繳款方式</th><th>狀態</th></tr></thead><tbody>@if(ui.current.participants){@for(p of ui.current.participants;track p.id){<tr><td>{{p.name}}</td><td>{{p.group}}</td><td>{{p.feeName||feeLabel(p.fee)}}<small>{{p.payment==='ONSITE'?'現場繳費':p.fee==='SINGLE'?'銀行轉帳':'不需繳款'}}</small></td><td>{{p.payment==='BANK_TRANSFER'?'待確認':'報名完成'}}（NT$ {{p.amount}}）</td></tr>}}@else{<tr><td>{{ui.profile.nickname||ui.profile.name}}</td><td>{{ui.current.group}}</td><td>{{ui.current.payment==='ONSITE'?'現場繳費':(ui.current.feeName||feeLabel(ui.current.fee))}}</td><td>{{ui.current.status}}</td></tr>}</tbody></table><p>可至「我的報名」查看最新進度。</p><button class="screen-primary screen-full" (click)="ui.open('records')">查看我的報名 <demo-icon [props]="{name:'arrow-right',size:20}"/></button></div></ng-template>
+<ng-template viewAnchor="fragment72" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment73" let-c>
+<ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v3" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v4" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v5" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v6" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v7" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v8" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v9" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v10" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v11" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v12" [viewOwner]="this" [viewRevision]="fragments.size"/>
+</ng-template>

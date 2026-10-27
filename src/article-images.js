@@ -1,6 +1,6 @@
 export function articleImageProblem(file) {
-  if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) return '請使用 JPG、PNG 或 WebP 圖片。';
-  if (file.size > 5 * 1024 * 1024) return '每張圖片上限為 5 MB，請縮小後再加入。';
+  if (!['image/jpeg', 'image/png'].includes(file.type)) return '請使用 JPG／JPEG／PNG 圖片。';
+  if (file.size > 10 * 1024 * 1024) return '每張圖片上限為 10 MB，請縮小後再加入。';
   if (!file.size) return '圖片檔案為空，請重新選擇。';
   return '';
 }

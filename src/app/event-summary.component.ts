@@ -1,0 +1,4 @@
+import {Component,Input} from '@angular/core';
+import {IconComponent} from './icons.component';
+@Component({selector:'ui-event-summary',standalone:true,imports:[IconComponent],template:`<aside class="screen-event-summary"><img src="./assets/event-forest-photo.png" alt="森林中的定向選手與31號檢查點"><div><span class="screen-status">報名中</span><h2>{{event?.name||'冬日森林定向賽'}}</h2><p><demo-icon [props]="{name:'calendar-blank',size:19}"/>{{date(event?.starts||event?.date||'2026-12-13')}}</p><p><demo-icon [props]="{name:'map-pin',size:19}"/>{{event?.location||'新北市林口'}}</p><p><demo-icon [props]="{name:'clipboard-text',size:19}"/>報名截止 {{date(event?.closes||'2026-12-06')}}</p></div></aside>`})
+export class EventSummary{@Input() event:any;date(v:string){let d=v.slice(0,10);return d.replaceAll('-','.')+'（'+['日','一','二','三','四','五','六'][new Date(d+'T12:00:00+08:00').getUTCDay()]+'）';}}

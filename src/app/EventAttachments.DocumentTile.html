@@ -1,0 +1,32 @@
+<ng-container [viewFragment]="view" [viewOwner]="this" [viewRevision]="fragments.size"/>
+<ng-template viewAnchor="text" let-c>{{c.value}}</ng-template>
+<ng-template viewAnchor="fragment0" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment1" let-c>
+<strong><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></strong>
+</ng-template>
+<ng-template viewAnchor="fragment2" let-c>
+<span><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/> · <ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></span>
+</ng-template>
+<ng-template viewAnchor="fragment3" let-c>
+<div><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>
+<ng-template viewAnchor="fragment4" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment5" let-c>
+<button type="button" class="icon-button danger-text" (click)="c.v0($event)" [attr.aria-label]="c.v1"><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/></button>
+</ng-template>
+<ng-template viewAnchor="fragment6" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment7" let-c>
+<span>下載</span>
+</ng-template>
+<ng-template viewAnchor="fragment8" let-c>
+<a class="attachment-download" [attr.href]="c.v0" [attr.download]="c.v1" [attr.aria-label]="c.v2"><ng-container [viewFragment]="c.v3" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v4" [viewOwner]="this" [viewRevision]="fragments.size"/></a>
+</ng-template>
+<ng-template viewAnchor="fragment9" let-c>
+<article class="attachment-document"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/></article>
+</ng-template>

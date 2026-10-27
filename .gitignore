@@ -7,3 +7,5 @@ dist/
 coverage/
 qa/
 reference/
+.angular/
+out-tsc/

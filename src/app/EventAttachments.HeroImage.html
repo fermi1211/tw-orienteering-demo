@@ -1,0 +1,14 @@
+<ng-container [viewFragment]="view" [viewOwner]="this" [viewRevision]="fragments.size"/>
+<ng-template viewAnchor="text" let-c>{{c.value}}</ng-template>
+<ng-template viewAnchor="fragment0" let-c>
+<img [attr.src]="c.v0" [attr.alt]="c.v1">
+</ng-template>
+<ng-template viewAnchor="fragment1" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment2" let-c>
+<span><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/>放大查看</span>
+</ng-template>
+<ng-template viewAnchor="fragment3" let-c>
+<button type="button" class="event-hero-view" (click)="c.v0($event)" [attr.aria-label]="c.v1"><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v3" [viewOwner]="this" [viewRevision]="fragments.size"/></button>
+</ng-template>

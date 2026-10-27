@@ -1,0 +1,14 @@
+<ng-container [viewFragment]="view" [viewOwner]="this" [viewRevision]="fragments.size"/>
+<ng-template viewAnchor="text" let-c>{{c.value}}</ng-template>
+<ng-template viewAnchor="fragment0" let-c>
+<input type="hidden" name="mapLatitude" [formValue]="c.v0">
+</ng-template>
+<ng-template viewAnchor="fragment1" let-c>
+<input type="hidden" name="mapLongitude" [formValue]="c.v0">
+</ng-template>
+<ng-template viewAnchor="fragment2" let-c>
+<input type="hidden" name="mapApproximate" [formValue]="c.v0">
+</ng-template>
+<ng-template viewAnchor="fragment3" let-c>
+<ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/>
+</ng-template>

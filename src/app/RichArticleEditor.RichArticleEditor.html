@@ -1,0 +1,182 @@
+<ng-container [viewFragment]="view" [viewOwner]="this" [viewRevision]="fragments.size"/>
+<ng-template viewAnchor="text" let-c>{{c.value}}</ng-template>
+<ng-template viewAnchor="fragment0" let-c>
+<p class="hint">正在準備文章編輯器…</p>
+</ng-template>
+<ng-template viewAnchor="fragment1" let-c>
+<button type="button" [attr.class]="c.v0" [attr.title]="c.v1" [attr.aria-label]="c.v2" [attr.aria-pressed]="c.v3" [disabled]="c.v4" (mousedown)="c.v5($event)" (click)="c.v6($event)">@if(toolbarIcons[c.v2]){<demo-icon [props]="{name:toolbarIcons[c.v2],size:18}"/>}@else{<ng-container [viewFragment]="c.v7" [viewOwner]="this" [viewRevision]="fragments.size"/>}</button>
+</ng-template>
+<ng-template viewAnchor="fragment2" let-c>
+<option [formValue]="c.v0">內文</option>
+</ng-template>
+<ng-template viewAnchor="fragment3" let-c>
+<option [formValue]="c.v0">大標題</option>
+</ng-template>
+<ng-template viewAnchor="fragment4" let-c>
+<option [formValue]="c.v0">中標題</option>
+</ng-template>
+<ng-template viewAnchor="fragment5" let-c>
+<option [formValue]="c.v0">小標題</option>
+</ng-template>
+<ng-template viewAnchor="fragment6" let-c>
+<select aria-label="段落樣式" [formValue]="c.v0" (change)="c.v1($event)"><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v3" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v4" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v5" [viewOwner]="this" [viewRevision]="fragments.size"/></select>
+</ng-template>
+<ng-template viewAnchor="fragment7" let-c>
+<label>段落<ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></label>
+</ng-template>
+<ng-template viewAnchor="fragment8" let-c>
+<option [formValue]="c.v0"><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></option>
+</ng-template>
+<ng-template viewAnchor="fragment9" let-c>
+<select aria-label="文章字型" [formValue]="c.v0" (change)="c.v1($event)"><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/></select>
+</ng-template>
+<ng-template viewAnchor="fragment10" let-c>
+<label>字型<ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></label>
+</ng-template>
+<ng-template viewAnchor="fragment11" let-c>
+<option [formValue]="c.v0"><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/> px</option>
+</ng-template>
+<ng-template viewAnchor="fragment12" let-c>
+<select aria-label="文字大小" [formValue]="c.v0" (change)="c.v1($event)"><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/></select>
+</ng-template>
+<ng-template viewAnchor="fragment13" let-c>
+<label>字級<ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></label>
+</ng-template>
+<ng-template viewAnchor="fragment14" let-c>
+<div class="rich-toolbar-row rich-type-options"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>
+<ng-template viewAnchor="fragment15" let-c>
+<b>B</b>
+</ng-template>
+<ng-template viewAnchor="fragment16" let-c>
+<i>I</i>
+</ng-template>
+<ng-template viewAnchor="fragment17" let-c>
+<u>U</u>
+</ng-template>
+<ng-template viewAnchor="fragment18" let-c>
+<span aria-hidden="true">A</span>
+</ng-template>
+<ng-template viewAnchor="fragment19" let-c>
+<input type="color" aria-label="文字顏色" [formValue]="c.v0" (input)="c.v1($event); c.v2($event)">
+</ng-template>
+<ng-template viewAnchor="fragment20" let-c>
+<label class="rich-color" title="文字顏色"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></label>
+</ng-template>
+<ng-template viewAnchor="fragment21" let-c>
+<span aria-hidden="true">螢</span>
+</ng-template>
+<ng-template viewAnchor="fragment22" let-c>
+<input type="color" aria-label="螢光底色" [formValue]="c.v0" (input)="c.v1($event); c.v2($event)">
+</ng-template>
+<ng-template viewAnchor="fragment23" let-c>
+<label class="rich-color rich-highlight" title="螢光底色"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></label>
+</ng-template>
+<ng-template viewAnchor="fragment24" let-c>
+<span class="rich-toolbar-divider"></span>
+</ng-template>
+<ng-template viewAnchor="fragment25" let-c>
+<span class="rich-toolbar-divider"></span>
+</ng-template>
+<ng-template viewAnchor="fragment26" let-c>
+<button type="button" class="rich-add-image" [disabled]="c.v0" (click)="c.v1($event)"><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/></button>
+</ng-template>
+<ng-template viewAnchor="fragment27" let-c>
+<input [elementBinding]="c.v0" type="file" accept="image/jpeg,image/png,image/webp" [multiple]="c.v1" [hidden]="c.v2" aria-label="文章內文圖片" (change)="c.v3($event)">
+</ng-template>
+<ng-template viewAnchor="fragment28" let-c>
+<div class="rich-toolbar-row"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v3" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v4" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v5" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v6" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v7" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v8" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v9" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v10" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v11" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v12" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v13" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v14" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v15" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v16" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v17" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v18" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v19" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v20" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v21" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>
+<ng-template viewAnchor="fragment29" let-c>
+<div class="rich-toolbar" role="group" aria-label="文章排版工具列"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>
+<ng-template viewAnchor="fragment30" let-c>
+<strong>圖片設定</strong>
+</ng-template>
+<ng-template viewAnchor="fragment31" let-c>
+<button type="button" class="text-button danger-text" (click)="c.v0($event)">移除圖片</button>
+</ng-template>
+<ng-template viewAnchor="fragment32" let-c>
+<header><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></header>
+</ng-template>
+<ng-template viewAnchor="fragment33" let-c>
+<input [formValue]="c.v0" [maxLength]="c.v1" (input)="c.v2($event); c.v3($event)">
+</ng-template>
+<ng-template viewAnchor="fragment34" let-c>
+<label class="field">圖片描述（顯示在圖下）<ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></label>
+</ng-template>
+<ng-template viewAnchor="fragment35" let-c>
+<input [formValue]="c.v0" [maxLength]="c.v1" (input)="c.v2($event); c.v3($event)">
+</ng-template>
+<ng-template viewAnchor="fragment36" let-c>
+<label class="field">替代文字（供閱讀輔助）<ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></label>
+</ng-template>
+<ng-template viewAnchor="fragment37" let-c>
+<div class="rich-image-fields"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>
+<ng-template viewAnchor="fragment38" let-c>
+<input type="range" min="25" max="100" step="5" aria-label="圖片大小" [formValue]="c.v0" (input)="c.v1($event); c.v2($event)">
+</ng-template>
+<ng-template viewAnchor="fragment39" let-c>
+<label class="field">圖片大小：<ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/>%<ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></label>
+</ng-template>
+<ng-template viewAnchor="fragment40" let-c>
+<option [formValue]="c.v0">靠左</option>
+</ng-template>
+<ng-template viewAnchor="fragment41" let-c>
+<option [formValue]="c.v0">置中</option>
+</ng-template>
+<ng-template viewAnchor="fragment42" let-c>
+<option [formValue]="c.v0">靠右</option>
+</ng-template>
+<ng-template viewAnchor="fragment43" let-c>
+<select [formValue]="c.v0" (change)="c.v1($event)"><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v3" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v4" [viewOwner]="this" [viewRevision]="fragments.size"/></select>
+</ng-template>
+<ng-template viewAnchor="fragment44" let-c>
+<label class="field">圖片對齊<ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></label>
+</ng-template>
+<ng-template viewAnchor="fragment45" let-c>
+<div class="rich-image-fields"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>
+<ng-template viewAnchor="fragment46" let-c>
+<p>寬度依文章可用空間等比例調整，手機會自動縮放。</p>
+</ng-template>
+<ng-template viewAnchor="fragment47" let-c>
+<section class="rich-image-settings" aria-label="選取圖片設定"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v3" [viewOwner]="this" [viewRevision]="fragments.size"/></section>
+</ng-template>
+<ng-template viewAnchor="fragment48" let-c>
+<p class="form-error rich-error" role="alert"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></p>
+</ng-template>
+<ng-template viewAnchor="fragment49" let-c>
+<div [editorMount]="c.v0"></div>
+</ng-template>
+<ng-template viewAnchor="fragment50" let-c>
+<p class="rich-editor-help">可直接貼上文字、貼上或拖入圖片。JPG／JPEG／PNG，每張 10 MB、每篇最多 {{imageLimit}} 張；選取圖片即可調整。Ctrl／⌘ Z 復原。</p>
+</ng-template>
+<ng-template viewAnchor="fragment51" let-c>
+<input name="href" type="url" [value]="c.v0" placeholder="https://" [required]="c.v1">
+</ng-template>
+<ng-template viewAnchor="fragment52" let-c>
+<label class="field">網址<ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></label>
+</ng-template>
+<ng-template viewAnchor="fragment53" let-c>
+<input name="label">
+</ng-template>
+<ng-template viewAnchor="fragment54" let-c>
+<label class="field">顯示文字（選填）<ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></label>
+</ng-template>
+<ng-template viewAnchor="fragment55" let-c>
+<p class="form-error" role="alert"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></p>
+</ng-template>
+<ng-template viewAnchor="fragment56" let-c>
+<button type="submit" class="primary">套用連結</button>
+</ng-template>
+<ng-template viewAnchor="fragment57" let-c>
+<form (submit)="c.v0($event)"><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v3" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v4" [viewOwner]="this" [viewRevision]="fragments.size"/></form>
+</ng-template>
+<ng-template viewAnchor="fragment58" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment59" let-c>
+<div class="rich-editor"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v3" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v4" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v5" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>

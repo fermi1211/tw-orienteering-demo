@@ -1,0 +1,38 @@
+<ng-container [viewFragment]="view" [viewOwner]="this" [viewRevision]="fragments.size"/>
+<ng-template viewAnchor="text" let-c>{{c.value}}</ng-template>
+<ng-template viewAnchor="fragment0" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment1" let-c>
+<span><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></span>
+</ng-template>
+<ng-template viewAnchor="fragment2" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment3" let-c>
+<button type="button" aria-label="上一張活動圖片" (click)="c.v0($event)"><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></button>
+</ng-template>
+<ng-template viewAnchor="fragment4" let-c>
+<span aria-live="polite"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/> / <ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></span>
+</ng-template>
+<ng-template viewAnchor="fragment5" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment6" let-c>
+<button type="button" aria-label="下一張活動圖片" (click)="c.v0($event)"><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></button>
+</ng-template>
+<ng-template viewAnchor="fragment7" let-c>
+<div class="event-hero-controls"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>
+<ng-template viewAnchor="fragment8" let-c>
+<div class="event-hero-caption"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>
+<ng-template viewAnchor="fragment9" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment10" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment11" let-c>
+<section class="uploaded-event-hero" aria-label="活動主圖"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/></section>
+</ng-template>

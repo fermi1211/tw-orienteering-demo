@@ -57,3 +57,16 @@ test('new parameter category IDs survive draft and published article normalizati
   assert.equal(publicArticles([record])[0].category,category);
   assert.equal(optionName([{id:category,name:'新增的分類',active:false}],record.published.category),'新增的分類');
 });
+
+test('multiple assigned roles merge active screens and never bypass admin-only checks',()=>{
+ const roles=[...initialRoles,{id:'editor',name:'編輯',active:true,screens:['admin.articles']},{id:'inactive',name:'停用',active:false,screens:['admin.events']},{id:'spoof',name:'假管理員',active:true,screens:['admin.roles']}];
+ const next=assignMemberRole(initialDemoMembers,roles,'member-1',['MEMBER','editor'],'ADMIN');
+ assert.deepEqual(next[0].roleIds,['MEMBER','editor']);
+ assert.equal(canViewScreen(roles,next[0].roleIds,'profile'),true);
+ assert.equal(canViewScreen(roles,next[0].roleIds,'admin.articles'),true);
+ assert.equal(canEnterAdmin(roles,next[0].roleIds),true);
+ assert.equal(canViewScreen(roles,['MEMBER','inactive'],'admin.events'),false);
+ assert.equal(canViewScreen(roles,['MEMBER','spoof'],'admin.roles'),false);
+ assert.throws(()=>assignMemberRole(initialDemoMembers,roles,'member-1',[],'ADMIN'));
+ assert.throws(()=>assignMemberRole(initialDemoMembers,roles,'member-1',['MEMBER','ADMIN'],'ADMIN'));
+});

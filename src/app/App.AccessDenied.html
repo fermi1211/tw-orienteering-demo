@@ -1,0 +1,26 @@
+<ng-container [viewFragment]="view" [viewOwner]="this" [viewRevision]="fragments.size"/>
+<ng-template viewAnchor="text" let-c>{{c.value}}</ng-template>
+<ng-template viewAnchor="fragment0" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment1" let-c>
+<h1><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></h1>
+</ng-template>
+<ng-template viewAnchor="fragment2" let-c>
+<p><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></p>
+</ng-template>
+<ng-template viewAnchor="fragment3" let-c>
+<button class="secondary" (click)="c.v0($event)"><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></button>
+</ng-template>
+<ng-template viewAnchor="fragment4" let-c>
+<nav aria-label="可用畫面"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></nav>
+</ng-template>
+<ng-template viewAnchor="fragment5" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment6" let-c>
+<button class="primary" (click)="c.v0($event)"><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/></button>
+</ng-template>
+<ng-template viewAnchor="fragment7" let-c>
+<main id="main" class="access-denied"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v3" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v4" [viewOwner]="this" [viewRevision]="fragments.size"/></main>
+</ng-template>

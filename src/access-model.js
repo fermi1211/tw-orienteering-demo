@@ -34,9 +34,10 @@ export const initialOptionSets = {
   memberLabels:[{id:'member',name:'會員',active:true},{id:'legacy-prepaid',name:'舊制已預繳',active:true}],
 };
 export const optionName=(options,id)=>options.find(option=>option.id===id)?.name || id || '未設定';
-export const roleName=(roles,id)=>optionName(roles,id);
+export const roleName=(roles,id)=>Array.isArray(id)?id.map(key=>optionName(roles,key)).join('、'):optionName(roles,id);
 export function roleScreenAllowed(roleId,page) {return Boolean(page) && !(page.adminOnly&&roleId!=='ADMIN') && !(roleId==='GUEST'&&!page.public);}
 export function canViewScreen(roles,roleId,screenId) {
+  if(Array.isArray(roleId)) return roleId.some(id=>canViewScreen(roles,id,screenId));
   const role=roles.find(item=>item.id===roleId),page=screenCatalog.find(item=>item.id===screenId);
   return Boolean(role?.active && roleScreenAllowed(roleId,page) && role.screens?.includes(screenId));
 }
@@ -54,9 +55,9 @@ export function optionErrors(options) {
 }
 export function assignMemberRole(members,roles,targetId,nextRoleId,actorRole) {
   if(actorRole!=='ADMIN')throw new Error('只有 admin 可以指派角色。');
-  const target=members.find(member=>member.id===targetId),role=roles.find(item=>item.id===nextRoleId);
-  if(!target||target.role==='ADMIN'||!role?.active||['ADMIN','GUEST'].includes(nextRoleId))throw new Error('此角色無法指派，請選擇啟用中的會員角色。');
-  return members.map(member=>member.id===targetId?{...member,role:nextRoleId}:member);
+  const target=members.find(member=>member.id===targetId),ids=[...new Set(Array.isArray(nextRoleId)?nextRoleId:[nextRoleId])];
+  if(!target||target.role==='ADMIN'||!ids.length||ids.some(id=>!roles.some(role=>role.id===id&&role.active&&!['ADMIN','GUEST'].includes(id))))throw new Error('此角色無法指派，請選擇啟用中的會員角色。');
+  return members.map(member=>member.id===targetId?{...member,role:ids.includes('MANAGER')?'MANAGER':ids[0],...(Array.isArray(nextRoleId)?{roleIds:ids}:member.roleIds?{roleIds:ids}:{})}:member);
 }
 export function applyMemberLabels(member,selectedIds,definitions) {
   const existing=member.labelIds||[];

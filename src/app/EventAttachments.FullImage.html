@@ -1,0 +1,11 @@
+<ng-container [viewFragment]="view" [viewOwner]="this" [viewRevision]="fragments.size"/>
+<ng-template viewAnchor="text" let-c>{{c.value}}</ng-template>
+<ng-template viewAnchor="fragment0" let-c>
+<img [attr.src]="c.v0" [attr.alt]="c.v1">
+</ng-template>
+<ng-template viewAnchor="fragment1" let-c>
+<figcaption><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></figcaption>
+</ng-template>
+<ng-template viewAnchor="fragment2" let-c>
+<figure class="attachment-full"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></figure>
+</ng-template>

@@ -1,0 +1,3 @@
+import {Component,Input} from '@angular/core';
+@Component({selector:'ui-member-navigation',standalone:true,template:`<aside class="screen-member-nav"><nav aria-label="會員選單"><button type="button" [class.active]="active==='registrations'" (click)="navigate('registrations')">我的報名</button><button type="button" [class.active]="active==='profile'" (click)="navigate('profile')">會員資料</button><button type="button" [class.active]="active==='wallet'" (click)="wallet()">我的儲值金</button><button type="button" (click)="logout()">登出</button></nav></aside>`})
+export class MemberNavigation{@Input() active='profile';@Input() navigate:(view:string)=>void=()=>{};@Input() wallet:()=>void=()=>{};@Input() logout:()=>void=()=>{};}

@@ -1,0 +1,54 @@
+<main id="main" class="events-page campaign-events">
+  <section class="campaign-hero" aria-labelledby="events-heading">
+    <img class="campaign-image" src="./assets/find-your-way-hero.png" alt="FIND YOUR WAY：森林中的定向越野選手與 31 號橘白檢查點" fetchpriority="high" width="2048" height="768">
+    @if (featured; as event) {
+      <div class="campaign-copy">
+        <h1 id="events-heading">下一站，<br>出發<span>。</span></h1>
+        <p class="campaign-event-name">{{event.name}}</p>
+        <p class="campaign-date">{{event.date.replaceAll('-', '.')}} <small>（{{weekday(event.date)}}）</small></p>
+        <p class="campaign-location"><ng-container [viewComponent]="icons.MapPin" [componentProps]="{size:21}"/>{{event.location}}</p>
+        <button type="button" class="primary" (click)="props.onSelect(event)">{{event.state==='open'?'查看賽事與報名':'查看賽事資訊'}}<ng-container [viewComponent]="icons.ArrowRight" [componentProps]="{size:22}"/></button>
+      </div>
+      <p class="campaign-caption">@if(event.deadline){報名截止 {{event.deadline}}<span>·</span>}@if(event.singleFee!==undefined){{{event.singleFeeName||'單次報名'}} NT$ {{event.singleFee}}}</p>
+    }@else{
+      <div class="campaign-copy"><h1 id="events-heading">下一站，<br>出發<span>。</span></h1><p class="campaign-event-name">新賽事籌備中</p></div>
+    }
+  </section>
+  <div class="events-index-layout">
+    <aside class="events-index">
+      <p class="section-kicker">EVENTS</p><h2>賽事</h2>
+      <nav aria-label="賽事分類">
+        @for(section of sections; track section.key){
+          <button type="button" [class.active]="selectedSection===section.key" [attr.aria-current]="selectedSection===section.key?'true':null" (click)="chooseSection(section.key)">{{section.title}}</button>
+        }
+      </nav>
+    </aside>
+    <div class="events-results">
+      <div class="events-view-controls">
+        <p>{{selectedSection==='past'?'回看走過的路，準備下一次出發。':'找一場賽事，準備出發。'}}</p>
+        <div role="group" aria-label="賽事顯示方式">
+          <button type="button" [attr.aria-pressed]="props.mode==='list'" (click)="props.onModeChange('list')"><ng-container [viewComponent]="icons.List" [componentProps]="{size:18}"/>列表</button>
+          <button type="button" [attr.aria-pressed]="props.mode==='calendar'" (click)="props.onModeChange('calendar')"><ng-container [viewComponent]="icons.CalendarBlank" [componentProps]="{size:18}"/>日曆</button>
+        </div>
+      </div>
+      @if(props.mode==='calendar'){
+        <ng-container [viewComponent]="calendarComponent" [componentProps]="calendarProps"/>
+      }@else{
+        @for(section of visibleSections; track section.key){
+          <section class="events-section" [attr.aria-label]="section.title">
+            <ol class="events-list">
+              @for(event of section.events; track event.id){
+                <li class="event-row" [class.event-row-open]="event.state==='open'">
+                  <time class="event-date" [attr.datetime]="event.date"><span>{{event.date.slice(0,4)}}</span><div><strong>{{event.displayDate}}</strong><small aria-label="星期">{{weekday(event.date)}}</small></div></time>
+                  <div class="event-row-info"><span class="event-row-status" [class.open]="event.state==='open'">{{status(event)}}</span><h3>{{event.name}}</h3><p class="event-row-location"><ng-container [viewComponent]="icons.MapPin" [componentProps]="{size:19}"/>{{event.location}}</p></div>
+                  <div class="event-row-meta">@if(event.deadline){<p>報名截止 {{event.deadline}}</p>}@if(event.singleFee!==undefined){<p>{{event.singleFeeName||'單次報名'}} NT$ {{event.singleFee}}</p>}</div>
+                  <div class="event-row-action"><button type="button" [class]="event.state==='open'?'primary':'event-row-link'" [attr.aria-label]="'查看'+event.name+(event.state==='open'?'與報名':'資訊')" (click)="props.onSelect(event)">{{event.state==='open'?'查看賽事與報名':'查看資訊'}}<ng-container [viewComponent]="icons.ArrowRight" [componentProps]="{size:21}"/></button></div>
+                </li>
+              }@empty{<li class="events-empty">{{section.key==='open'?'目前沒有報名中的賽事。':section.key==='past'?'尚無過去賽事。':'更多賽事籌備中。'}}</li>}
+            </ol>
+          </section>
+        }
+      }
+    </div>
+  </div>
+</main>

@@ -1,0 +1,20 @@
+<ng-container [viewFragment]="view" [viewOwner]="this" [viewRevision]="fragments.size"/>
+<ng-template viewAnchor="text" let-c>{{c.value}}</ng-template>
+<ng-template viewAnchor="fragment0" let-c>
+<h2>簡章下載</h2>
+</ng-template>
+<ng-template viewAnchor="fragment1" let-c>
+<p>下載主辦單位提供的活動文件。</p>
+</ng-template>
+<ng-template viewAnchor="fragment2" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment3" let-c>
+<div class="attachment-documents"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>
+<ng-template viewAnchor="fragment4" let-c>
+<p class="attachment-empty">主辦單位尚未提供可下載的簡章。</p>
+</ng-template>
+<ng-template viewAnchor="fragment5" let-c>
+<section class="activity-section event-downloads" aria-label="簡章下載"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/></section>
+</ng-template>

@@ -1,3 +1,4 @@
+import {singleEventFee} from './event-options-model.js';
 import { activeEventRows, registrationClosed, syncStartOrder, validateStartOrder } from './event-export-model.js';
 
 export const defaultVisibility = { registrations: false, maskRegistrations: true, startOrder: false, maskStartOrder: true };
@@ -14,7 +15,7 @@ export function eventState(event, now = Date.now()) {
 export const stateLabels = { open: '報名中', upcoming: '尚未開放', closed: '報名已截止', past: '過去賽事' };
 export function eventForList(event, now = Date.now()) {
   const date = event.starts?.slice(0, 10) || '';
-  return { ...event, date, displayDate: date.slice(5).replace('-', '.'), deadline: event.closes?.slice(5, 10).replace('-', '.') || (event.kind==='HISTORICAL'?'':'待公告'), state: eventState(event, now), singleFee: event.fees?.SINGLE };
+  return { ...event, date, displayDate: date.slice(5).replace('-', '.'), deadline: event.closes?.slice(5, 10).replace('-', '.') || (event.kind==='HISTORICAL'?'':'待公告'), state: eventState(event, now), singleFee: singleEventFee(event)?.amount, singleFeeName:singleEventFee(event)?.name };
 }
 export function groupedEvents(catalog, now = Date.now()) {
   const published = catalog.filter(event => event.status === 'PUBLISHED').map(event => eventForList(event, now));

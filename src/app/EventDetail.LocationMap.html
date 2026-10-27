@@ -1,0 +1,44 @@
+<ng-container [viewFragment]="view" [viewOwner]="this" [viewRevision]="fragments.size"/>
+<ng-template viewAnchor="text" let-c>{{c.value}}</ng-template>
+<ng-template viewAnchor="fragment0" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment1" let-c>
+<h2>活動地點</h2>
+</ng-template>
+<ng-template viewAnchor="fragment2" let-c>
+<div class="activity-map-heading"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>
+<ng-template viewAnchor="fragment3" let-c>
+<p class="activity-map-location"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></p>
+</ng-template>
+<ng-template viewAnchor="fragment4" let-c>
+<p class="activity-map-note"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></p>
+</ng-template>
+<ng-template viewAnchor="fragment5" let-c>
+<iframe [attr.title]="c.v0" [src]="c.v1" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+</ng-template>
+<ng-template viewAnchor="fragment6" let-c>
+<ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/>
+</ng-template>
+<ng-template viewAnchor="fragment7" let-c>
+<p class="attachment-empty">地圖位置尚未設定，請以主辦單位公布的集合資訊為準。</p>
+</ng-template>
+<ng-template viewAnchor="fragment8" let-c>
+<a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">© OpenStreetMap contributors</a>
+</ng-template>
+<ng-template viewAnchor="fragment9" let-c>
+<ng-container [viewComponent]="c.v0" [componentProps]="c.v1"/>
+</ng-template>
+<ng-template viewAnchor="fragment10" let-c>
+<a class="osm-expand" [attr.href]="c.v0" target="_blank" rel="noreferrer">開啟地圖<ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></a>
+</ng-template>
+<ng-template viewAnchor="fragment11" let-c>
+<div class="activity-map-footer"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>
+<ng-template viewAnchor="fragment12" let-c>
+<p class="activity-map-help">地圖無法載入時，可使用「開啟地圖」查看。</p>
+</ng-template>
+<ng-template viewAnchor="fragment13" let-c>
+<section class="activity-map" aria-label="賽事地點地圖"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v3" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v4" [viewOwner]="this" [viewRevision]="fragments.size"/></section>
+</ng-template>

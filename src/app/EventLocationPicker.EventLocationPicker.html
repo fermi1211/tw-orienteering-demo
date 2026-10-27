@@ -1,0 +1,59 @@
+<ng-container [viewFragment]="view" [viewOwner]="this" [viewRevision]="fragments.size"/>
+<ng-template viewAnchor="text" let-c>{{c.value}}</ng-template>
+<ng-template viewAnchor="fragment0" let-c>
+<h3>活動地圖位置</h3>
+</ng-template>
+<ng-template viewAnchor="fragment1" let-c>
+<p class="hint" [attr.id]="c.v0">拖移、縮放地圖找到場地，點一下即可標記；也可拖曳圖釘調整位置。</p>
+</ng-template>
+<ng-template viewAnchor="fragment2" let-c>
+<div [elementBinding]="c.v0" class="location-picker-map" role="region" aria-label="選擇賽事位置的 OpenStreetMap 地圖" [attr.aria-describedby]="c.v1"></div>
+</ng-template>
+<ng-template viewAnchor="fragment3" let-c>
+<button type="button" class="text-button" (click)="c.v0($event)">重新載入地圖</button>
+</ng-template>
+<ng-template viewAnchor="fragment4" let-c>
+<p class="location-map-error" role="status">部分地圖暫時無法載入，仍可輸入經緯度。<ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></p>
+</ng-template>
+<ng-template viewAnchor="fragment5" let-c>
+<p class="location-selection" role="status"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></p>
+</ng-template>
+<ng-template viewAnchor="fragment6" let-c>
+<button type="button" class="location-map-button" (click)="c.v0($event)">將地圖中心設為位置</button>
+</ng-template>
+<ng-template viewAnchor="fragment7" let-c>
+<button type="button" class="location-map-button" [disabled]="c.v0" (click)="c.v1($event)">查看已選位置</button>
+</ng-template>
+<ng-template viewAnchor="fragment8" let-c>
+<button type="button" class="text-button" [disabled]="c.v0" (click)="c.v1($event)">清除位置</button>
+</ng-template>
+<ng-template viewAnchor="fragment9" let-c>
+<div class="location-picker-actions"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>
+<ng-template viewAnchor="fragment10" let-c>
+<input name="mapLatitude" type="number" step="any" min="-85" max="85" [formValue]="c.v0" (input)="c.v1($event); c.v2($event)" placeholder="例如 25.077">
+</ng-template>
+<ng-template viewAnchor="fragment11" let-c>
+<label class="field">地圖緯度<ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></label>
+</ng-template>
+<ng-template viewAnchor="fragment12" let-c>
+<input name="mapLongitude" type="number" step="any" min="-180" max="180" [formValue]="c.v0" (input)="c.v1($event); c.v2($event)" placeholder="例如 121.389">
+</ng-template>
+<ng-template viewAnchor="fragment13" let-c>
+<label class="field">地圖經度<ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/></label>
+</ng-template>
+<ng-template viewAnchor="fragment14" let-c>
+<div class="field-grid"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/></div>
+</ng-template>
+<ng-template viewAnchor="fragment15" let-c>
+<input name="mapApproximate" type="checkbox" [checked]="c.v0" (change)="c.v1($event)">
+</ng-template>
+<ng-template viewAnchor="fragment16" let-c>
+<label class="consent"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/>僅顯示區域示意，集合點尚未確認</label>
+</ng-template>
+<ng-template viewAnchor="fragment17" let-c>
+<p class="hint">區域示意不放圖釘；兩欄留空則前台僅顯示地點文字。點選地圖會取消區域示意，儲存賽事後套用。</p>
+</ng-template>
+<ng-template viewAnchor="fragment18" let-c>
+<section class="map-editor location-picker"><ng-container [viewFragment]="c.v0" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v1" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v2" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v3" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v4" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v5" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v6" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v7" [viewOwner]="this" [viewRevision]="fragments.size"/><ng-container [viewFragment]="c.v8" [viewOwner]="this" [viewRevision]="fragments.size"/></section>
+</ng-template>
